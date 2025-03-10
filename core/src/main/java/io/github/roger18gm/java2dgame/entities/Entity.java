@@ -1,5 +1,6 @@
 package io.github.roger18gm.java2dgame.entities;
 
+// abstract class to be used by other classes
 public abstract class Entity {
     protected int x, y, speed;
 
