@@ -28,10 +28,10 @@ public class Main extends ApplicationAdapter {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        soldierWalking = new Character("/Users/lilysorensen/Documents/semester5/cse310/java-game/assets/characters/Characters(100x100)/Soldier/Soldier/Soldier-Walk.png", 50, 50, 8);
-        soldierIdel = new Character("/Users/lilysorensen/Documents/semester5/cse310/java-game/assets/characters/Characters(100x100)/Soldier/Soldier/Soldier-Idle.png", 100, 50, 6);
-        soldierHurt = new Character("/Users/lilysorensen/Documents/semester5/cse310/java-game/assets/characters/Characters(100x100)/Soldier/Soldier/Soldier-Hurt.png", 150, 50, 4);
-        soldierDeath = new Character("/Users/lilysorensen/Documents/semester5/cse310/java-game/assets/characters/Characters(100x100)/Soldier/Soldier/Soldier-Death.png", 200, 50, 4);
+        soldierWalking = new Character("/Users/lilysorensen/Documents/semester5/java-game/assets/characters/Characters(100x100)/Soldier/Soldier/Soldier-Walk.png", 50, 50, 8);
+        soldierIdel = new Character("/Users/lilysorensen/Documents/semester5/java-game/assets/characters/Characters(100x100)/Soldier/Soldier/Soldier-Idle.png", 100, 50, 6);
+        soldierHurt = new Character("/Users/lilysorensen/Documents/semester5/java-game/assets/characters/Characters(100x100)/Soldier/Soldier/Soldier-Hurt.png", 150, 50, 4);
+        soldierDeath = new Character("/Users/lilysorensen/Documents/semester5/java-game/assets/characters/Characters(100x100)/Soldier/Soldier/Soldier-Death.png", 200, 50, 4);
 
 
 //        TextureRegion[][] tempFrames = TextureRegion.split(characterSheet,
