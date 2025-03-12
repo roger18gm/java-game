@@ -2,88 +2,88 @@ package io.github.roger18gm.java2dgame;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
+import io.github.roger18gm.java2dgame.entities.Player;
+import io.github.roger18gm.java2dgame.movement.PlayerMovement;
 
 //import java.lang.classfile.attribute.CharacterRangeTableAttribute;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
-    //    private Texture characterSheet;
-//    private Animation<TextureRegion> walkAnimation;
-//    private float stateTime;
-    private Character soldierWalking;
-    private Character soldierIdel;
-    private Character soldierHurt;
-    private Character soldierDeath;
-
+    public Character soldierIdle;
+    Texture soldierIdleTexture;
+    Sprite soldierIdleSprite;
+    Texture leftSoldierIdleTexture;
+    Sprite leftSoldierIdleSprite;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        soldierWalking = new Character("/Users/lilysorensen/Documents/semester5/java-game/assets/characters/Characters(100x100)/Soldier/Soldier/Soldier-Walk.png", 50, 50, 8);
-        soldierIdel = new Character("/Users/lilysorensen/Documents/semester5/java-game/assets/characters/Characters(100x100)/Soldier/Soldier/Soldier-Idle.png", 100, 50, 6);
-        soldierHurt = new Character("/Users/lilysorensen/Documents/semester5/java-game/assets/characters/Characters(100x100)/Soldier/Soldier/Soldier-Hurt.png", 150, 50, 4);
-        soldierDeath = new Character("/Users/lilysorensen/Documents/semester5/java-game/assets/characters/Characters(100x100)/Soldier/Soldier/Soldier-Death.png", 200, 50, 4);
+        soldierIdleTexture = new Texture("C:\\Users\\Roger\\Desktop\\javagame\\assets\\Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Idle.png");
+        leftSoldierIdleTexture = soldierIdleTexture;
 
-
-//        TextureRegion[][] tempFrames = TextureRegion.split(characterSheet,
-//            characterSheet.getWidth() / FRAME_COLS,
-//            characterSheet.getHeight() / FRAME_ROWS);
-//
-//        TextureRegion[] animationFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
-//        int index = 0;
-//        for (int i = 0; i < FRAME_ROWS; i++){
-//            for (int j = 0; j < FRAME_COLS; j++){
-//                animationFrames[index++] = tempFrames[i][j];
-//            }
-//        }
-//
-//        walkAnimation = new Animation<>(0.1f, animationFrames);
-//        stateTime = 0f;
+        soldierIdleSprite = new Sprite(soldierIdleTexture);
     }
 
-    @Override
-    public void render() {
-//        stateTime += Gdx.graphics.getDeltaTime();
-//        TextureRegion currentFrame = walkAnimation.getKeyFrame(stateTime, true);
+    private void input() {
+        float speed = 15f;
+        float delta = Gdx.graphics.getDeltaTime();
 
-//        float newWidth = 200;
-//        float newHeight = 200;
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            soldierIdleSprite.translateX(speed * delta);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            soldierIdleSprite.translateX(-speed * delta);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            soldierIdleSprite.translateY(speed * delta);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            soldierIdleSprite.translateY(-speed * delta);
+        }
+    }
 
-        float deltaTime = Gdx.graphics.getDeltaTime();
-
-        soldierWalking.update(deltaTime);
-        soldierIdel.update(deltaTime);
-        soldierHurt.update(deltaTime);
-        soldierDeath.update(deltaTime);
-
-//       ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-
-        ScreenUtils.clear(1.0f, 0.75f, 0.80f, 1.0f); // RGB (255, 192, 203) -> (1.0, 0.75, 0.80)
+    private void draw() {
+        Gdx.gl.glClearColor(1, 0.75f, 0.80f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        soldierWalking.render(batch);
-        soldierIdel.render(batch);
-        soldierHurt.render(batch);
-        soldierDeath.render(batch);
+        soldierIdleSprite.draw(batch);
         batch.end();
+    }
+    @Override
+    public void render() {
+
+        input();
+        draw();
+
+//        float deltaTime = Gdx.graphics.getDeltaTime();
+//
+//        soldierIdle.update(deltaTime);
+//
+//
+//        ScreenUtils.clear(1.0f, 0.75f, 0.80f, 1.0f); // RGB (255, 192, 203) -> (1.0, 0.75, 0.80)
+//
+//        batch.begin();
+//        soldierIdle.render(batch);
+//        batch.end();
     }
 
     @Override
     public void dispose() {
         batch.dispose();
-        soldierWalking.dispose();
-        soldierIdel.dispose();
-        soldierHurt.dispose();
-        soldierDeath.dispose();
+//        soldierWalking.dispose();
+        soldierIdle.dispose();
+//        soldierHurt.dispose();
+//        soldierDeath.dispose();
 
     }
 }
