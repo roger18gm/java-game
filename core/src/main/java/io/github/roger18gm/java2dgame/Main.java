@@ -1,8 +1,10 @@
 package io.github.roger18gm.java2dgame;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,7 +20,7 @@ import io.github.roger18gm.java2dgame.movement.PlayerMovement;
 //import java.lang.classfile.attribute.CharacterRangeTableAttribute;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class Main extends ApplicationAdapter {
+public class Main extends Game {
     private SpriteBatch batch;
     public Character soldierIdle;
     Texture soldierIdleTexture;
@@ -29,24 +31,25 @@ public class Main extends ApplicationAdapter {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        soldierIdleTexture = new Texture("C:\\Users\\Roger\\Desktop\\javagame\\assets\\Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Idle.png");
+        FileHandle soldierImageFile = Gdx.files.internal("Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Idle.png");
+        soldierIdleTexture = new Texture(soldierImageFile);
         leftSoldierIdleTexture = soldierIdleTexture;
 
         soldierIdleSprite = new Sprite(soldierIdleTexture);
     }
 
     private void input() {
-        float speed = 15f;
+        float speed = 30f;
         float delta = Gdx.graphics.getDeltaTime();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             soldierIdleSprite.translateX(speed * delta);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             soldierIdleSprite.translateX(-speed * delta);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             soldierIdleSprite.translateY(speed * delta);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             soldierIdleSprite.translateY(-speed * delta);
         }
     }
@@ -65,25 +68,12 @@ public class Main extends ApplicationAdapter {
         input();
         draw();
 
-//        float deltaTime = Gdx.graphics.getDeltaTime();
-//
-//        soldierIdle.update(deltaTime);
-//
-//
-//        ScreenUtils.clear(1.0f, 0.75f, 0.80f, 1.0f); // RGB (255, 192, 203) -> (1.0, 0.75, 0.80)
-//
-//        batch.begin();
-//        soldierIdle.render(batch);
-//        batch.end();
     }
 
     @Override
     public void dispose() {
         batch.dispose();
-//        soldierWalking.dispose();
         soldierIdle.dispose();
-//        soldierHurt.dispose();
-//        soldierDeath.dispose();
 
     }
 }
