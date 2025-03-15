@@ -42,7 +42,7 @@ public class Main extends ApplicationAdapter {
         float deltaTime = Gdx.graphics.getDeltaTime();
 
         // Call MovePerson's Move() method to update the character's position
-        movePerson.update();
+        movePerson.update(deltaTime);
 
 
         ScreenUtils.clear(1.0f, 0.75f, 0.80f, 1.0f); // RGB (255, 192, 203) -> (1.0, 0.75, 0.80)

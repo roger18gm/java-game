@@ -54,7 +54,7 @@ public class MovePerson  implements InputProcessor {
     }
 
     // Update class that moves the character in Render in Main
-    public void update() {
+    public void update(float deltaTime) {
         if (movingLeft) {
             character.SetX(character.GetX() - 1); // Move Left
         }
@@ -75,6 +75,7 @@ public class MovePerson  implements InputProcessor {
         {
             character.SetFilePath(IDLE_PATH, 6);
         }
+        character.update(deltaTime);
     }
 
 
