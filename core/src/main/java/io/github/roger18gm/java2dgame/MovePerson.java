@@ -57,9 +57,11 @@ public class MovePerson  implements InputProcessor {
     public void update(float deltaTime) {
         if (movingLeft) {
             character.SetX(character.GetX() - 1); // Move Left
+            character.setFacingLeft(true);           // Set character to face left
         }
         if (movingRight) {
             character.SetX(character.GetX() + 1); // Move Right
+            character.setFacingLeft(false);          // Set character to face right
         }
         if (movingUp) {
             character.SetY(character.GetY() + 1); // Move Up
