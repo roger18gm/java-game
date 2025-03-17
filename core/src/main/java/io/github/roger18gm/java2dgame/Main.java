@@ -10,21 +10,19 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
 
-<<<<<<< Updated upstream
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private Texture characterSheet;
     private Animation<TextureRegion> walkAnimation;
     private float stateTime;
-=======
-import javax.swing.text.AttributeSet;
+//    import javax.swing.text.AttributeSet;
 
 //import java.lang.classfile.attribute.CharacterRangeTableAttribute;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class Main extends ApplicationAdapter {
-    private SpriteBatch batch;
+//public class Main extends ApplicationAdapter {
+//    private SpriteBatch batch;
     private Background background;
     private Character soldierWalking;
     private Character soldierIdle;
@@ -38,7 +36,6 @@ public class Main extends ApplicationAdapter {
     private Character orcAttack;
 
 
->>>>>>> Stashed changes
 
     private static final int FRAME_COLS = 9;
     private static final int FRAME_ROWS = 1;
@@ -46,13 +43,11 @@ public class Main extends ApplicationAdapter {
     @Override
     public void create() {
         batch = new SpriteBatch();
-<<<<<<< Updated upstream
         characterSheet = new Texture(Gdx.files.absolute("/Users/lilysorensen/Documents/semester5/cse310/java-game/assets/characters/Characters(100x100)/Soldier/Soldier/Soldier-Attack03.png"));
 
         TextureRegion[][] tempFrames = TextureRegion.split(characterSheet,
             characterSheet.getWidth() / FRAME_COLS,
             characterSheet.getHeight() / FRAME_ROWS);
-=======
 
         // Background
         background = new Background();
@@ -68,7 +63,6 @@ public class Main extends ApplicationAdapter {
         orcHurt = new Character("characters/Characters(100x100)/Orc/Orc/Orc-Hurt.png", 400, 50, 4);
         orcDeath = new Character("characters/Characters(100x100)/Orc/Orc/Orc-Death.png", 450, 50, 4);
         orcAttack = new Character("characters/Characters(100x100)/Orc/Orc/Orc-Attack02.png", 500, 50, 6);
->>>>>>> Stashed changes
 
         TextureRegion[] animationFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
         int index = 0;
@@ -90,9 +84,7 @@ public class Main extends ApplicationAdapter {
         float newWidth = 200;
         float newHeight = 200;
 
-<<<<<<< Updated upstream
 //        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-=======
         float deltaTime = Gdx.graphics.getDeltaTime();
 
         soldierWalking.update(deltaTime);
@@ -107,14 +99,11 @@ public class Main extends ApplicationAdapter {
         orcAttack.update(deltaTime);
 
 //       ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
->>>>>>> Stashed changes
 
         ScreenUtils.clear(1.0f, 0.75f, 0.80f, 1.0f); // RGB (255, 192, 203) -> (1.0, 0.75, 0.80)
 
         batch.begin();
-<<<<<<< Updated upstream
         batch.draw(currentFrame, -50, -50, newWidth, newHeight);
-=======
         background.render(batch);
         soldierWalking.render(batch);
         soldierIdle.render(batch);
@@ -126,16 +115,13 @@ public class Main extends ApplicationAdapter {
         orcHurt.render(batch);
         orcDeath.render(batch);
         orcAttack.render(batch);
->>>>>>> Stashed changes
         batch.end();
     }
 
     @Override
     public void dispose() {
         batch.dispose();
-<<<<<<< Updated upstream
         characterSheet.dispose();
-=======
         background.dispose();
         soldierWalking.dispose();
         soldierIdle.dispose();
@@ -149,7 +135,6 @@ public class Main extends ApplicationAdapter {
         orcAttack.dispose();
 
 
->>>>>>> Stashed changes
     }
 }
 
