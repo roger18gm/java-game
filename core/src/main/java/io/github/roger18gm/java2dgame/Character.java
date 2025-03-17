@@ -20,6 +20,7 @@ public class Character {
     private int frameCols;
     private static final int FRAME_ROWS = 1;
     private String filePath;
+    private boolean facingLeft = false;  // To track if the character is facing left
 
 
     // Constructor
@@ -60,7 +61,19 @@ public class Character {
     // Render the current frame of the animation
     public void render(SpriteBatch batch) {
         TextureRegion currentFrame = animation.getKeyFrame(stateTime, true); // Get current frame in animation
+
+
+        // Flip the animation if facing left
+        if (facingLeft) {
+            currentFrame.flip(true, false);  // Flip horizontally
+        }
+
         batch.draw(currentFrame, x, y, 200, 200); // Draw the current frame of the character
+
+        // Reset flip to avoid affecting other frames
+        if (facingLeft) {
+            currentFrame.flip(true, false);  // Flip back to normal
+        }
     }
 
     // Dispose the character sheet (texture) to free resources
@@ -107,6 +120,11 @@ public class Character {
             createAnimationFrames();
 
         }
+    }
+
+    // Set the direction the character is facing
+    public void setFacingLeft(boolean facingLeft) {
+        this.facingLeft = facingLeft;
     }
 }
 

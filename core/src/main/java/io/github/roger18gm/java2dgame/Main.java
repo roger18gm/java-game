@@ -24,12 +24,13 @@ public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private Character soldier;
     private MovePerson movePerson;  // Add a MovePerson instance
-
+    private Background background;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         soldier = new Character("C:\\Users\\jerem\\OneDrive\\Documents\\Winter2025\\Applied Programming\\java-game\\assets\\characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Walk.png", 100, 50, 6);
+        background = new Background();
 
         // Create MovePerson instance and pass the soldierWalking character to it
         movePerson = new MovePerson(soldier);
@@ -42,12 +43,13 @@ public class Main extends ApplicationAdapter {
         float deltaTime = Gdx.graphics.getDeltaTime();
 
         // Call MovePerson's Move() method to update the character's position
-        movePerson.update();
+        movePerson.update(deltaTime);
 
 
         ScreenUtils.clear(1.0f, 0.75f, 0.80f, 1.0f); // RGB (255, 192, 203) -> (1.0, 0.75, 0.80)
 
         batch.begin();
+        background.render(batch);
         // Render the current character depending on the state (idle or walking)
         soldier.render(batch);
         batch.end();
@@ -57,5 +59,6 @@ public class Main extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         soldier.dispose();
+        background.dispose();
     }
 }
