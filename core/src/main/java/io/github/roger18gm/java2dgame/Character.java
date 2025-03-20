@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.physics.box2d.*;
 import io.github.roger18gm.java2dgame.entities.Player;
 import io.github.roger18gm.java2dgame.movement.PlayerMovement;
 
@@ -21,18 +22,31 @@ public class Character {
     private static final int FRAME_ROWS = 1;
     private String filePath;
     private boolean facingLeft = false;  // To track if the character is facing left
-
+    private Body body;
 
     // Constructor
-    public Character(String filepath, int x, int y, int frameCols) {
-        this.x = x;
-        this.y = y;
+    public Character(World world, String filepath, int x, int y, int frameCols) {
         this.frameCols = frameCols;
         this.filePath = filepath;
         characterSheet = new Texture(Gdx.files.absolute(filepath));
-
-        // Create animation frames
         createAnimationFrames();
+
+        // Create Box2D body
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(x, y);
+        body = world.createBody(bodyDef);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(10, 15); // Adjust size as needed
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.3f;
+
+        body.createFixture(fixtureDef);
+        shape.dispose();
     }
 
     // Creates the animation frames based on the texture and number of columns
@@ -62,18 +76,22 @@ public class Character {
     public void render(SpriteBatch batch) {
         TextureRegion currentFrame = animation.getKeyFrame(stateTime, true); // Get current frame in animation
 
-
         // Flip the animation if facing left
         if (facingLeft) {
             currentFrame.flip(true, false);  // Flip horizontally
         }
 
-        batch.draw(currentFrame, x, y, 200, 200); // Draw the current frame of the character
+        batch.draw(currentFrame, body.getPosition().x - currentFrame.getRegionWidth() , body.getPosition().y - currentFrame.getRegionHeight() , 200, 200); // Draw the current frame of the character
+//        batch.draw(currentFrame, x, y, 200, 200); // Draw the current frame of the character
 
         // Reset flip to avoid affecting other frames
         if (facingLeft) {
             currentFrame.flip(true, false);  // Flip back to normal
         }
+    }
+
+    public Body getBody() {
+        return body;
     }
 
     // Dispose the character sheet (texture) to free resources
