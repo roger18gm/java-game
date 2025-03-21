@@ -38,7 +38,7 @@ public class Main extends ApplicationAdapter {
         debugRenderer = new Box2DDebugRenderer();
         batch = new SpriteBatch();
 //        FileHandle solderWalkFile = Gdx.files.internal("assets/characters/Characters(100x100)/Soldier/Soldier/Soldier-Walk.png");
-        soldier = new Character(world, "C:\\Users\\Roger\\Desktop\\javagame\\assets\\Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Walk.png", 100, 50, 6);
+        soldier = new Character(world, "characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Walk.png", 100, 50, 6);
         background = new Background(world);
 
         // Create MovePerson instance and pass the soldierWalking character to it

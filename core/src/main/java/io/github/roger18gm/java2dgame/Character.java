@@ -38,7 +38,8 @@ public class Character {
         body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(10, 15); // Adjust size as needed
+        shape.setAsBox(15, 15); // Adjust size as needed
+//        shape.setAsBox(10, 15); // Adjust size as needed
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -81,7 +82,8 @@ public class Character {
             currentFrame.flip(true, false);  // Flip horizontally
         }
 
-        batch.draw(currentFrame, body.getPosition().x - currentFrame.getRegionWidth() , body.getPosition().y - currentFrame.getRegionHeight() , 200, 200); // Draw the current frame of the character
+        batch.draw(currentFrame, body.getPosition().x - currentFrame.getRegionWidth() - 10 , body.getPosition().y - currentFrame.getRegionHeight() - 10, 220, 220); // Draw the current frame of the character
+//        batch.draw(currentFrame, body.getPosition().x - currentFrame.getRegionWidth() , body.getPosition().y - currentFrame.getRegionHeight() , 200, 200); // Draw the current frame of the character
 //        batch.draw(currentFrame, x, y, 200, 200); // Draw the current frame of the character
 
         // Reset flip to avoid affecting other frames

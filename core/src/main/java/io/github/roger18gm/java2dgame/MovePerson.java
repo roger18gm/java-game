@@ -15,8 +15,8 @@ public class MovePerson  implements InputProcessor {
     private boolean movingUp = false;
     private boolean movingDown = false;
     private final int SPEED = 60;
-    private static final String WALKING_PATH = "C:\\Users\\Roger\\Desktop\\javagame\\assets\\Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Walk.png";
-    private static final String IDLE_PATH = "C:\\Users\\Roger\\Desktop\\javagame\\assets\\Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Idle.png";
+    private static final String WALKING_PATH = "characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Walk.png";
+    private static final String IDLE_PATH = "characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Idle.png";
 
 
     public MovePerson(Character character) {

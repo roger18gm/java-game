@@ -50,7 +50,6 @@ public class Background {
         {0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0},
         {0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-
     };
 
     public Background(World world){
@@ -107,8 +106,25 @@ public class Background {
     private void createStaticBodies() {
         for (int row = 0; row < propGrid.length; row++) {
             for (int col = 0; col < propGrid[row].length; col++) {
-                if (propGrid[row][col] == (2) || propGrid[row][col] == (4) || propGrid[row][col] == (7) ) {
-                    createStaticBody(col * tileSize, (propGrid.length - 1 - row) * tileSize, tileSize, tileSize);
+                if (propGrid[row][col] == (2)) { // the horizontal hedges
+                    createStaticBody(col * tileSize, (propGrid.length - 1 - row) * tileSize, tileSize * 2, tileSize);
+                }
+                if (propGrid[row][col] == (4)) { // the vertical hedges
+                    createStaticBody(col * tileSize, (propGrid.length - 1 - row) * tileSize, tileSize, tileSize * 2);
+                }
+                if (propGrid[row][col] == (5)) { // the horizontal logs
+                    createStaticBody(col * tileSize, (propGrid.length - 1 - row) * tileSize, tileSize * 2, tileSize);
+                }
+//                if (propGrid[row][col] == (6)) { // the flags
+//                    createStaticBody(col * tileSize, (propGrid.length - 1 - row) * tileSize, tileSize * 2, tileSize * 2);
+//                }
+
+                if (propGrid[row][col] == (7)) { // the vertical logs
+                    createStaticBody(col * tileSize, (propGrid.length - 1 - row) * tileSize, tileSize, tileSize * 2);
+                }
+
+                if (propGrid[row][col] == (8)) { // the red target thing
+                    createStaticBody(col * tileSize, (propGrid.length - 1 - row) * tileSize, tileSize * 2, tileSize * 2);
                 }
             }
         }
@@ -197,48 +213,56 @@ public class Background {
 
 
         // Prop map grid rules
-//        for (int row = 0; row < tileGrid.length; row++){
-//            for (int col = 0; col < tileGrid[row].length; col++){
-//
-//                int x = col * tileSize;
-//                int y = (tileGrid.length - 1 - row) * tileSize;
-//
-//                if (propGrid[row][col] == 1)
-//                    batch.draw(buildingTileA, x, y, tileSize, tileSize);
-//                else if(propGrid[row][col] == 2)
-//                    batch.draw(longHedge, x, y, tileSize * 2, tileSize);
-//                else if (propGrid[row][col] == 3)
-//                    batch.draw(shortHedge, x, y, tileSize, tileSize);
-//                else if (propGrid[row][col] == 4){
-//                    batch.draw(longHedge,
-//                        x, y,
-//                        tileSize / 2f, tileSize / 2f,
-//                        tileSize * 2, tileSize,
-//                        1f, 1f,
-//                        90,
-//                        0, 0,
-//                        longHedge.getWidth(), longHedge.getHeight(),
-//                        false, false);
-//                }
-//                else if (propGrid[row][col] == 5)
-//                    batch.draw(log, x, y, tileSize * 2, tileSize * 2);
-//                else if (propGrid[row][col] == 6)
-//                    batch.draw(flag, x, y, tileSize * 2, tileSize * 2);
-//                else if (propGrid[row][col] == 7){
-//                    batch.draw(log,
-//                        x, y,
-//                        tileSize / 2f, tileSize / 2f,
-//                        tileSize * 2, tileSize * 2,
-//                        1f, 1f,
-//                        90,
-//                        0, 0,
-//                        log.getWidth(), log.getHeight(),
-//                        false, false);
-//                }
-//                else if (propGrid[row][col] == 8)
-//                    batch.draw(target, x, y, tileSize * 2, tileSize * 2);
-//            }
-//        }
+        for (int row = 0; row < tileGrid.length; row++){
+
+            Texture buildingTileA = textures[6];
+            Texture longHedge = textures[16];
+            Texture shortHedge = textures[17];
+            Texture log = textures[18];
+            Texture flag = textures[19];
+            Texture target = textures[20];
+
+            for (int col = 0; col < tileGrid[row].length; col++){
+
+                int x = col * tileSize;
+                int y = (tileGrid.length - 1 - row) * tileSize;
+
+                if (propGrid[row][col] == 1)
+                    batch.draw(buildingTileA, x, y, tileSize, tileSize);
+                else if(propGrid[row][col] == 2)
+                    batch.draw(longHedge, x, y, tileSize * 2, tileSize);
+                else if (propGrid[row][col] == 3)
+                    batch.draw(shortHedge, x, y, tileSize, tileSize);
+                else if (propGrid[row][col] == 4){
+                    batch.draw(longHedge,
+                        x, y,
+                        tileSize / 2f, tileSize / 2f,
+                        tileSize * 2, tileSize,
+                        1f, 1f,
+                        90,
+                        0, 0,
+                        longHedge.getWidth(), longHedge.getHeight(),
+                        false, false);
+                }
+                else if (propGrid[row][col] == 5) // horizontal logs
+                    batch.draw(log, x , y - (tileSize / 2) - 20, tileSize * 2, tileSize * 3);
+                else if (propGrid[row][col] == 6)
+                    batch.draw(flag, x, y, tileSize * 2, tileSize * 2);
+                else if (propGrid[row][col] == 7){ // vertical logs
+                    batch.draw(log,
+                        x + (tileSize / 2) + 20, y,
+                        tileSize / 2f, tileSize / 2f,
+                        tileSize * 2, tileSize * 3,
+                        1f, 1f,
+                        90,
+                        0, 0,
+                        log.getWidth(), log.getHeight(),
+                        false, false);
+                }
+                else if (propGrid[row][col] == 8)
+                    batch.draw(target, x, y, tileSize * 2, tileSize * 2);
+            }
+        }
     }
 
     public void dispose() {
