@@ -1,35 +1,40 @@
-package io.github.roger18gm.java2dgame;
+package io.github.roger18gm.java2dgame.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.steer.SteeringAcceleration;
+import com.badlogic.gdx.ai.steer.SteeringBehavior;
+import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import io.github.roger18gm.java2dgame.entities.Player;
-import io.github.roger18gm.java2dgame.movement.PlayerMovement;
 
-import java.awt.*;
-import java.lang.management.PlatformLoggingMXBean;
-
-public class Character {
+public class Enemy {
     private Texture characterSheet;
     private Animation<TextureRegion> animation;
     private float stateTime;
-    private int x, y;
     private int frameCols;
     private static final int FRAME_ROWS = 1;
     private String filePath;
     private boolean facingLeft = false;  // To track if the character is facing left
+    private SteeringAgent enemyAgent;
+    private Body playerAgent;
+    private SteeringBehavior<Vector2> seekBehavior;
+    private SteeringAcceleration<Vector2> steeringOutput;
     private Body body;
 
-    // Constructor
-    public Character(World world, String filepath, int x, int y, int frameCols) {
+    public Enemy(World world, String filepath, int x, int y, Body playerAgent){
         this.frameCols = frameCols;
         this.filePath = filepath;
         characterSheet = new Texture(Gdx.files.absolute(filepath));
         createAnimationFrames();
+
+        this.enemyAgent = new SteeringAgent(body);
+        this.playerAgent = playerAgent;
+        this.steeringOutput = new SteeringAcceleration<>(new Vector2());
+        this.seekBehavior = new Seek<>(enemyAgent, playerAgent);
 
         // Create Box2D body
         BodyDef bodyDef = new BodyDef();
@@ -50,6 +55,23 @@ public class Character {
         shape.dispose();
     }
 
+    public void update(float deltaTime) {
+        seekBehavior.calculateSteering(steeringOutput);
+        applySteering(deltaTime);
+    }
+
+    private void applySteering(float deltaTime) {
+        Vector2 force = steeringOutput.linear.scl(deltaTime);
+        body.applyForceToCenter(force, true);
+//        enemyAgent.getLinearVelocity().add(force);
+//        enemyAgent.getLinearVelocity().limit(enemyAgent.getMaxLinearSpeed());
+//        enemyAgent.getPosition().add(enemyAgent.getLinearVelocity().scl(deltaTime));
+    }
+
+    public void setSeekBehavior(SteeringBehavior<Vector2> behavior) {
+        this.seekBehavior = behavior;
+    }
+
     // Creates the animation frames based on the texture and number of columns
     private void createAnimationFrames() {
         TextureRegion[][] tempFrames = TextureRegion.split(characterSheet,
@@ -66,11 +88,6 @@ public class Character {
 
         animation = new Animation<>(0.1f, animationFrames); // Create the animation with frame time of 0.1f
         stateTime = 0f; // Reset state time for animation
-    }
-
-    // Update the state time (should be called every frame)
-    public void update(float deltaTime) {
-        stateTime += deltaTime;
     }
 
     // Render the current frame of the animation
@@ -92,35 +109,9 @@ public class Character {
         }
     }
 
-    public Body getBody() {
-        return body;
-    }
-
     // Dispose the character sheet (texture) to free resources
     public void dispose() {
         characterSheet.dispose();
-    }
-
-    // Getter and Setter for position
-    public int GetX() {
-        return x;
-    }
-
-    public void SetX(int x) {
-        this.x = x;
-    }
-
-    public int GetY() {
-        return y;
-    }
-
-    public void SetY(int y) {
-        this.y = y;
-    }
-
-    // Getter and Setter for the file path (also reloads texture and animation frames)
-    public String GetFilePath() {
-        return this.filePath;
     }
 
     public void SetFilePath(String filePath, int frameCols) {
@@ -145,5 +136,9 @@ public class Character {
     // Set the direction the character is facing
     public void setFacingLeft(boolean facingLeft) {
         this.facingLeft = facingLeft;
+    }
+
+    public Body getBody() {
+        return body;
     }
 }
