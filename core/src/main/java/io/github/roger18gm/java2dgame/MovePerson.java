@@ -1,6 +1,7 @@
 package io.github.roger18gm.java2dgame;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector2;
 
 import java.awt.event.KeyEvent;
 
@@ -13,26 +14,27 @@ public class MovePerson  implements InputProcessor {
     private boolean movingRight = false;
     private boolean movingUp = false;
     private boolean movingDown = false;
-    private static final String WALKING_PATH = "C:\\Users\\jerem\\OneDrive\\Documents\\Winter2025\\Applied Programming\\java-game\\assets\\characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Walk.png";
-    private static final String IDLE_PATH = "C:\\Users\\jerem\\OneDrive\\Documents\\Winter2025\\Applied Programming\\java-game\\assets\\characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Idle.png";
+    private final int SPEED = 60;
+    private static final String WALKING_PATH = "characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Walk.png";
+    private static final String IDLE_PATH = "characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Idle.png";
 
 
     public MovePerson(Character character) {
         this.character = character;
-        this.x = character.GetX();
-        this.y = character.GetY();
+//        this.x = character.GetX();
+//        this.y = character.GetY();
     }
 
     // Called when a key is pressed
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.LEFT) {
+        if (keycode == Input.Keys.A) {
             movingLeft = true; // Start moving left
-        } else if (keycode == Input.Keys.RIGHT) {
+        } else if (keycode == Input.Keys.D) {
             movingRight = true; // Start moving right
-        } else if (keycode == Input.Keys.UP) {
+        } else if (keycode == Input.Keys.W) {
             movingUp = true; // Start moving up
-        } else if (keycode == Input.Keys.DOWN) {
+        } else if (keycode == Input.Keys.S) {
             movingDown = true; // Start moving down
         }
         return true;
@@ -41,13 +43,13 @@ public class MovePerson  implements InputProcessor {
     // Called when a key is released
     @Override
     public boolean keyUp(int keycode) {
-        if (keycode == Input.Keys.LEFT) {
+        if (keycode == Input.Keys.A) {
             movingLeft = false; // Stop moving left
-        } else if (keycode == Input.Keys.RIGHT) {
+        } else if (keycode == Input.Keys.D) {
             movingRight = false; // Stop moving right
-        } else if (keycode == Input.Keys.UP) {
+        } else if (keycode == Input.Keys.W) {
             movingUp = false; // Stop moving up
-        } else if (keycode == Input.Keys.DOWN) {
+        } else if (keycode == Input.Keys.S) {
             movingDown = false; // Stop moving down
         }
         return true;
@@ -55,20 +57,29 @@ public class MovePerson  implements InputProcessor {
 
     // Update class that moves the character in Render in Main
     public void update(float deltaTime) {
+        // new addition
+        Vector2 velocity = new Vector2(0,0);
         if (movingLeft) {
-            character.SetX(character.GetX() - 1); // Move Left
+//            character.SetX(character.GetX() - 1); // Move Left
+            velocity.x = -SPEED;
             character.setFacingLeft(true);           // Set character to face left
         }
         if (movingRight) {
-            character.SetX(character.GetX() + 1); // Move Right
+//            character.SetX(character.GetX() + 1); // Move Right
+            velocity.x = SPEED;
             character.setFacingLeft(false);          // Set character to face right
         }
         if (movingUp) {
-            character.SetY(character.GetY() + 1); // Move Up
+//            character.SetY(character.GetY() + 1); // Move Up
+            velocity.y = SPEED;
         }
         if (movingDown) {
-            character.SetY(character.GetY() - 1); // Move Down
+//            character.SetY(character.GetY() - 1); // Move Down
+            velocity.y = -SPEED;
         }
+
+        character.getBody().setLinearVelocity(velocity);
+
         // Change images if moving
         if (movingDown || movingUp || movingLeft || movingRight){
             character.SetFilePath(WALKING_PATH, 8);
