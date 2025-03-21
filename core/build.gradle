@@ -14,4 +14,9 @@ dependencies {
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
+
+  tasks.withType(JavaCompile) {
+    options.compilerArgs += "--enable-preview"
+  }
+
 }

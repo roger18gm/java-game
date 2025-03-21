@@ -13,8 +13,8 @@ public class MovePerson  implements InputProcessor {
     private boolean movingRight = false;
     private boolean movingUp = false;
     private boolean movingDown = false;
-    private static final String WALKING_PATH = "C:\\Users\\jerem\\OneDrive\\Documents\\Winter2025\\Applied Programming\\java-game\\assets\\characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Walk.png";
-    private static final String IDLE_PATH = "C:\\Users\\jerem\\OneDrive\\Documents\\Winter2025\\Applied Programming\\java-game\\assets\\characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Idle.png";
+    private static final String WALKING_PATH = "C:\\Users\\austi\\IdeaProjects\\java-game\\assets\\characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Walk.png";
+    private static final String IDLE_PATH = "C:\\Users\\austi\\IdeaProjects\\java-game\\assets\\characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Idle.png";
 
 
     public MovePerson(Character character) {
