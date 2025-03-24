@@ -8,10 +8,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 public class SteeringAgent implements Steerable<Vector2> {
     private Body body;
-    private float maxSpeed = 2f;
-    private float maxLinearAcceleration = 5f;
-    private float maxAngularSpeed = 2f;
-    private float maxAngularAcceleration = 5f;
+    private float maxSpeed = 50f;
+    private float maxLinearAcceleration = 50f;
+    private float maxAngularSpeed = 50f;
+    private float maxAngularAcceleration = 50f;
     private boolean tagged;
 
     public SteeringAgent(Body body) {

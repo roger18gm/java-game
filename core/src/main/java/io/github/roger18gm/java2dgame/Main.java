@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
 import io.github.roger18gm.java2dgame.entities.Enemy;
+import io.github.roger18gm.java2dgame.entities.SteeringAgent;
 
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
@@ -43,8 +44,14 @@ public class Main extends ApplicationAdapter {
         batch = new SpriteBatch();
 //        FileHandle solderWalkFile = Gdx.files.internal("assets/characters/Characters(100x100)/Soldier/Soldier/Soldier-Walk.png");
         soldier = new Character(world, "characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Walk.png", 100, 50, 6);
-        Body playerAgent = soldier.getBody();
-        enemy = new Enemy(world, "characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Walk.png", 100, 50, playerAgent);
+
+        // Create a SteeringAgent for the player
+        SteeringAgent playerAgent = new SteeringAgent(soldier.getBody());
+
+        // Create an enemy character
+        enemy = new Enemy(world, 6, "characters/Characters(100x100)/Orc/Orc/Orc-Idle.png", 300, 200, playerAgent);
+
+        // Create a background
         background = new Background(world);
 
         // Create MovePerson instance and pass the soldierWalking character to it
@@ -60,12 +67,15 @@ public class Main extends ApplicationAdapter {
         // Call MovePerson's Move() method to update the character's position
         movePerson.update(deltaTime);
 
+        enemy.update(deltaTime); // Update the enemy's position
+
         ScreenUtils.clear(1.0f, 0.75f, 0.80f, 1.0f); // RGB (255, 192, 203) -> (1.0, 0.75, 0.80)
 
         batch.begin();
         background.render(batch);
         // Render the current character depending on the state (idle or walking)
         soldier.render(batch);
+        enemy.render(batch);
         batch.end();
         world.step(1/60f, 6, 2); // Step the physics world
         debugRenderer.render(world, batch.getProjectionMatrix());
@@ -78,5 +88,6 @@ public class Main extends ApplicationAdapter {
         background.dispose();
         world.dispose();
         debugRenderer.dispose();
+        enemy.dispose();
     }
 }

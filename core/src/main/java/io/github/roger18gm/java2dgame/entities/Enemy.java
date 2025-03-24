@@ -20,21 +20,16 @@ public class Enemy {
     private String filePath;
     private boolean facingLeft = false;  // To track if the character is facing left
     private SteeringAgent enemyAgent;
-    private Body playerAgent;
+    private SteeringAgent playerAgent;
     private SteeringBehavior<Vector2> seekBehavior;
     private SteeringAcceleration<Vector2> steeringOutput;
     private Body body;
 
-    public Enemy(World world, String filepath, int x, int y, Body playerAgent){
+    public Enemy(World world, int frameCols, String filepath, int x, int y, SteeringAgent playerAgent){
         this.frameCols = frameCols;
         this.filePath = filepath;
         characterSheet = new Texture(Gdx.files.absolute(filepath));
         createAnimationFrames();
-
-        this.enemyAgent = new SteeringAgent(body);
-        this.playerAgent = playerAgent;
-        this.steeringOutput = new SteeringAcceleration<>(new Vector2());
-        this.seekBehavior = new Seek<>(enemyAgent, playerAgent);
 
         // Create Box2D body
         BodyDef bodyDef = new BodyDef();
@@ -53,16 +48,37 @@ public class Enemy {
 
         body.createFixture(fixtureDef);
         shape.dispose();
+
+        this.enemyAgent = new SteeringAgent(body);
+        this.playerAgent = playerAgent;
+        this.steeringOutput = new SteeringAcceleration<>(new Vector2());
+        this.seekBehavior = new Seek<>(enemyAgent, playerAgent);
     }
 
     public void update(float deltaTime) {
+        System.out.println(playerAgent.getPosition());
         seekBehavior.calculateSteering(steeringOutput);
         applySteering(deltaTime);
     }
 
     private void applySteering(float deltaTime) {
-        Vector2 force = steeringOutput.linear.scl(deltaTime);
-        body.applyForceToCenter(force, true);
+        if (steeringOutput == null) return;
+
+        Vector2 force = steeringOutput.linear;
+
+        if (!force.isZero()) {
+            body.applyForceToCenter(force, true);
+
+            Vector2 velocity = body.getLinearVelocity();
+            float maxSpeed = enemyAgent.getMaxLinearSpeed();
+            if (velocity.len2() > maxSpeed * maxSpeed) {
+                velocity.nor().scl(maxSpeed);
+                body.setLinearVelocity(velocity);
+            }
+        }
+
+//        Vector2 force = steeringOutput.linear.scl(deltaTime);
+//        body.applyForceToCenter(force, true);
 //        enemyAgent.getLinearVelocity().add(force);
 //        enemyAgent.getLinearVelocity().limit(enemyAgent.getMaxLinearSpeed());
 //        enemyAgent.getPosition().add(enemyAgent.getLinearVelocity().scl(deltaTime));
@@ -99,9 +115,13 @@ public class Enemy {
             currentFrame.flip(true, false);  // Flip horizontally
         }
 
-        batch.draw(currentFrame, body.getPosition().x - currentFrame.getRegionWidth() - 10 , body.getPosition().y - currentFrame.getRegionHeight() - 10, 220, 220); // Draw the current frame of the character
-//        batch.draw(currentFrame, body.getPosition().x - currentFrame.getRegionWidth() , body.getPosition().y - currentFrame.getRegionHeight() , 200, 200); // Draw the current frame of the character
-//        batch.draw(currentFrame, x, y, 200, 200); // Draw the current frame of the character
+        float PPM = 100f; // Pixels per meter
+        Vector2 pos = body.getPosition();
+
+        batch.draw(currentFrame,
+            pos.x * PPM - 110,
+            pos.y * PPM - 110,
+            220, 220);
 
         // Reset flip to avoid affecting other frames
         if (facingLeft) {
