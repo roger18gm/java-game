@@ -78,6 +78,9 @@ public class MovePerson  implements InputProcessor {
             character.SetFilePath(IDLE_PATH, 6);
         }
         character.update(deltaTime);
+
+        boolean isPaused = false;
+        if (isPaused) return;
     }
 
 

@@ -202,4 +202,7 @@ public class Background {
         longHedge.dispose();
         shortHedge.dispose();
     }
+
+    public void update(float deltaTime) {
+    }
 }

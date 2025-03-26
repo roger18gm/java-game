@@ -1,8 +1,6 @@
 package io.github.roger18gm.java2dgame;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,7 +20,7 @@ import java.awt.event.KeyEvent;
 import java.security.Key;
 
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
+/** {@link ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private Character soldier;
@@ -30,6 +28,7 @@ public class Main extends ApplicationAdapter {
     private Background background;
 
     private Inventory inventory;
+    public static boolean isPaused = false;
 
     @Override
     public void create() {
@@ -38,25 +37,32 @@ public class Main extends ApplicationAdapter {
         background = new Background();
 
         inventory = new Inventory();
+        movePerson = new MovePerson(soldier);
 
         // Create MovePerson instance and pass the soldierWalking character to it
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(inventory.getStage());
         multiplexer.addProcessor(movePerson);
         Gdx.input.setInputProcessor(multiplexer);
+//        InputProcessor stage = null;
+//        Gdx.input.setInputProcessor(stage);
 //        movePerson = new MovePerson(soldier);
 //        Gdx.input.setInputProcessor(movePerson);
+        isPaused = false;
     }
 
     @Override
     public void render() {
 
         float deltaTime = Gdx.graphics.getDeltaTime();
-        float delta = Gdx.graphics.getDeltaTime(); // Time between frames
-        inventory.render(delta);
+//        float delta = Gdx.graphics.getDeltaTime(); // Time between frames
 
         // Call MovePerson's Move() method to update the character's position
-        movePerson.update(deltaTime);
+
+        if (!isPaused) {
+            movePerson.update(deltaTime);
+            background.update(deltaTime);
+        }
 
 
         ScreenUtils.clear(1.0f, 0.75f, 0.80f, 1.0f); // RGB (255, 192, 203) -> (1.0, 0.75, 0.80)
@@ -66,7 +72,19 @@ public class Main extends ApplicationAdapter {
         // Render the current character depending on the state (idle or walking)
         soldier.render(batch);
         batch.end();
+
+        inventory.render(deltaTime);
+
+
     }
+
+    public static boolean isGamePaused() {;
+        return isPaused;
+    }
+
+//    public static void setGamePaused (boolean paused) {
+//        isPaused = paused;
+//    }
 
     @Override
     public void dispose() {
