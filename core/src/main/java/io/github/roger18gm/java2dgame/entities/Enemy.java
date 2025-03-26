@@ -4,10 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
+import com.badlogic.gdx.ai.steer.behaviors.Wander;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
@@ -19,11 +21,11 @@ public class Enemy {
     private static final int FRAME_ROWS = 1;
     private String filePath;
     private boolean facingLeft = false;  // To track if the character is facing left
-    private SteeringAgent enemyAgent;
-    private SteeringAgent playerAgent;
+    private final SteeringAgent enemyAgent;
+    private final SteeringAgent playerAgent;
     private SteeringBehavior<Vector2> seekBehavior;
     private SteeringAcceleration<Vector2> steeringOutput;
-    private Body body;
+    private final Body body;
 
     public Enemy(World world, int frameCols, String filepath, int x, int y, SteeringAgent playerAgent){
         this.frameCols = frameCols;
@@ -50,13 +52,24 @@ public class Enemy {
         shape.dispose();
 
         this.enemyAgent = new SteeringAgent(body);
+        this.enemyAgent.setMaxLinearSpeed(200f);
+        this.enemyAgent.setMaxLinearAcceleration(200f);
+
         this.playerAgent = playerAgent;
         this.steeringOutput = new SteeringAcceleration<>(new Vector2());
         this.seekBehavior = new Seek<>(enemyAgent, playerAgent);
+        this.seekBehavior = new Wander<>(enemyAgent)
+            .setWanderRadius(2f)
+            .setWanderOffset(5f)
+            .setWanderRate(MathUtils.PI2 * 2f)
+            .setFaceEnabled(true);
     }
 
     public void update(float deltaTime) {
-        System.out.println(playerAgent.getPosition());
+        stateTime += deltaTime;
+//        System.out.println(playerAgent.getPosition());
+        System.out.println("Wander Force: " + steeringOutput.linear);
+
         seekBehavior.calculateSteering(steeringOutput);
         applySteering(deltaTime);
     }

@@ -49,7 +49,7 @@ public class Main extends ApplicationAdapter {
         SteeringAgent playerAgent = new SteeringAgent(soldier.getBody());
 
         // Create an enemy character
-        enemy = new Enemy(world, 6, "characters/Characters(100x100)/Orc/Orc/Orc-Idle.png", 300, 200, playerAgent);
+        enemy = new Enemy(world, 6, "characters\\Characters(100x100)\\Orc\\Orc\\Orc-Idle.png", 450, 310, playerAgent);
 
         // Create a background
         background = new Background(world);
