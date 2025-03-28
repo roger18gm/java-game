@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.Timer;
 
 public class Enemy implements InputProcessor{
     private Character character;  // Now accepts a character via constructor
-    private float x, y;
     private boolean movingLeft = false;
     private boolean movingRight = false;
     private boolean movingUp = false;
@@ -23,8 +22,6 @@ public class Enemy implements InputProcessor{
 
     public Enemy(Character character) {
         this.character = character;
-        this.x = character.GetX();
-        this.y = character.GetY();
         Gdx.input.setInputProcessor(this);
     }
 
@@ -34,10 +31,11 @@ public class Enemy implements InputProcessor{
     // Called when a key is pressed
     @Override
     public boolean keyDown(int keycode) {
-        Gdx.app.log("Enemy", "Key Pressed: " + keycode);
-        if (keycode == Input.Keys.LEFT) {movingLeft = true; }// Start moving left
-        else if (keycode == Input.Keys.RIGHT) {movingRight = true;} // Start moving right
-        else if (keycode == Input.Keys.UP) {
+        if (keycode == Input.Keys.LEFT) {
+            movingLeft = true; // Start moving left
+        } else if (keycode == Input.Keys.RIGHT) {
+            movingRight = true; // Start moving right
+        } else if (keycode == Input.Keys.UP) {
             movingUp = true; // Start moving up
         } else if (keycode == Input.Keys.DOWN) {
             movingDown = true; // Start moving down
