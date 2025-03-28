@@ -2,17 +2,23 @@ package io.github.roger18gm.java2dgame;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
+import io.github.roger18gm.java2dgame.entities.Player;
+import io.github.roger18gm.java2dgame.movement.PlayerMovement;
+
+import java.awt.*;
+import java.lang.management.PlatformLoggingMXBean;
 
 public class Character {
     private Texture characterSheet;
     private Animation<TextureRegion> animation;
     private float stateTime;
     private int x, y;
-    public int frameCols;
+    private int frameCols;
     private static final int FRAME_ROWS = 1;
     private String filePath;
     private boolean facingLeft = false;  // To track if the character is facing left
@@ -132,6 +138,7 @@ public class Character {
 
             // Recreate the animation frames with the new texture
             createAnimationFrames();
+
         }
     }
 

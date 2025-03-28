@@ -28,11 +28,12 @@ public class MovePerson implements InputProcessor {
         this.y = character.GetY();
     }
 
-    public float GetX(){
-        return x;
+    public float GetX() {
+        return character.getBody().getPosition().x;
     }
-    public float GetY(){
-        return y;
+
+    public float GetY() {
+        return character.getBody().getPosition().y;
     }
 
     // Called when a key is pressed
@@ -49,7 +50,7 @@ public class MovePerson implements InputProcessor {
         } else if (keycode == Input.Keys.SPACE){
             attack = true;
         }
-        return true;
+        return false;
     }
 
     // Called when a key is released
@@ -72,7 +73,7 @@ public class MovePerson implements InputProcessor {
                 }
             }, 0.5f);
         }
-        return true;
+        return false;
     }
 
     // Update class that moves the character in Render in Main
@@ -82,24 +83,20 @@ public class MovePerson implements InputProcessor {
         if (movingLeft) {
 //            character.SetX(character.GetX() - 1); // Move Left
             velocity.x = -SPEED;
-            x = velocity.x;
             character.setFacingLeft(true);           // Set character to face left
         }
         if (movingRight) {
 //            character.SetX(character.GetX() + 1); // Move Right
             velocity.x = SPEED;
-            x = velocity.x;
             character.setFacingLeft(false);          // Set character to face right
         }
         if (movingUp) {
 //            character.SetY(character.GetY() + 1); // Move Up
             velocity.y = SPEED;
-            y = velocity.y;
         }
         if (movingDown) {
 //            character.SetY(character.GetY() - 1); // Move Down
             velocity.y = -SPEED;
-            y = velocity.y;
         }
 
         character.getBody().setLinearVelocity(velocity);

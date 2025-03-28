@@ -2,6 +2,8 @@ package io.github.roger18gm.java2dgame;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -18,9 +20,10 @@ public class Main extends ApplicationAdapter {
     private Character soldier;
     private MovePerson movePerson;  // Add a MovePerson instance
     private Background background;
-
     private Character orc;
     private Enemy enemy;
+
+
 
     @Override
     public void create() {
@@ -34,15 +37,22 @@ public class Main extends ApplicationAdapter {
         // Create MovePerson instance and pass the soldierWalking character to it
         movePerson = new MovePerson(soldier);
         enemy = new Enemy(orc);
-        Gdx.input.setInputProcessor(movePerson);
+
+
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+
+        inputMultiplexer.addProcessor(movePerson);
+        inputMultiplexer.addProcessor(enemy);
+        Gdx.input.setInputProcessor(inputMultiplexer);
+
+
+        Gdx.app.log("Main", "InputProcessors added: MovePerson & Enemy");
     }
 
     @Override
     public void render() {
 
         float deltaTime = Gdx.graphics.getDeltaTime();
-
-        // Call MovePerson's Move() method to update the character's position
         movePerson.update(deltaTime);
         enemy.update(deltaTime);
 
@@ -50,10 +60,10 @@ public class Main extends ApplicationAdapter {
 
         batch.begin();
         background.render(batch);
-        // Render the current character depending on the state (idle or walking)
         soldier.render(batch);
         orc.render(batch);
         batch.end();
+
         world.step(1/60f, 6, 2); // Step the physics world
         debugRenderer.render(world, batch.getProjectionMatrix());
     }
