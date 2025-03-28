@@ -25,6 +25,7 @@ import javax.swing.JFrame;
 import java.awt.event.KeyEvent;
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.Random;
 
 //import java.lang.classfile.attribute.CharacterRangeTableAttribute;
 
@@ -36,9 +37,10 @@ public class Main extends ApplicationAdapter {
     private Character soldier;
     private MovePerson movePerson;  // Add a MovePerson instance
     private Background background;
+    private Random random;
     ArrayList<Enemy> enemies = new ArrayList<>();
 //    private Enemy enemy;
-//    private Enemy enemy2;
+//    private Enemy enemy2; 1000 w 750 h
 
     @Override
     public void create() {
@@ -58,9 +60,10 @@ public class Main extends ApplicationAdapter {
         movePerson = new MovePerson(soldier);
         Gdx.input.setInputProcessor(movePerson);
 
+        random = new Random();
         // Create an enemy character
-        for (int e=0; e < 50; e++) {
-             enemies.add(new Enemy(world, 6, "characters\\Characters(100x100)\\Orc\\Orc\\Orc-Idle.png", 450, 310, playerAgent));
+        for (int e=0; e < random.nextInt(100); e++) {
+             enemies.add(new Enemy(world, 6, "characters\\Characters(100x100)\\Orc\\Orc\\Orc-Idle.png", random.nextInt(950), random.nextInt(700), playerAgent));
         }
 //        enemy2 = new Enemy(world, 6, "characters\\Characters(100x100)\\Orc\\Orc\\Orc-Idle.png", 450, 310, playerAgent);
 //        enemy = new Enemy(world, 6, "characters\\Characters(100x100)\\Orc\\Orc\\Orc-Idle.png", 450, 310, playerAgent);
