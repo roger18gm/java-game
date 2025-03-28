@@ -52,16 +52,16 @@ public class Enemy {
         shape.dispose();
 
         this.enemyAgent = new SteeringAgent(body);
-        this.enemyAgent.setMaxLinearSpeed(200f);
-        this.enemyAgent.setMaxLinearAcceleration(200f);
+        this.enemyAgent.setMaxLinearSpeed(1000f);
+        this.enemyAgent.setMaxLinearAcceleration(1000f);
 
         this.playerAgent = playerAgent;
         this.steeringOutput = new SteeringAcceleration<>(new Vector2());
         this.seekBehavior = new Seek<>(enemyAgent, playerAgent);
         this.seekBehavior = new Wander<>(enemyAgent)
-            .setWanderRadius(2f)
-            .setWanderOffset(5f)
-            .setWanderRate(MathUtils.PI2 * 2f)
+            .setWanderRadius(50f)
+            .setWanderOffset(100f)
+            .setWanderRate(MathUtils.PI2 * 12f)
             .setFaceEnabled(true);
     }
 
@@ -77,7 +77,7 @@ public class Enemy {
     private void applySteering(float deltaTime) {
         if (steeringOutput == null) return;
 
-        Vector2 force = steeringOutput.linear;
+        Vector2 force = steeringOutput.linear.scl(50f);
 
         if (!force.isZero()) {
             body.applyForceToCenter(force, true);
@@ -128,7 +128,8 @@ public class Enemy {
             currentFrame.flip(true, false);  // Flip horizontally
         }
 
-        float PPM = 100f; // Pixels per meter
+//        float PPM = 100f; // Pixels per meter
+        float PPM = 1f; // Pixels per meter
         Vector2 pos = body.getPosition();
 
         batch.draw(currentFrame,

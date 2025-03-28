@@ -24,6 +24,7 @@ import javax.swing.JFrame;
 
 import java.awt.event.KeyEvent;
 import java.security.Key;
+import java.util.ArrayList;
 
 //import java.lang.classfile.attribute.CharacterRangeTableAttribute;
 
@@ -35,7 +36,9 @@ public class Main extends ApplicationAdapter {
     private Character soldier;
     private MovePerson movePerson;  // Add a MovePerson instance
     private Background background;
-    private Enemy enemy;
+    ArrayList<Enemy> enemies = new ArrayList<>();
+//    private Enemy enemy;
+//    private Enemy enemy2;
 
     @Override
     public void create() {
@@ -48,15 +51,19 @@ public class Main extends ApplicationAdapter {
         // Create a SteeringAgent for the player
         SteeringAgent playerAgent = new SteeringAgent(soldier.getBody());
 
-        // Create an enemy character
-        enemy = new Enemy(world, 6, "characters\\Characters(100x100)\\Orc\\Orc\\Orc-Idle.png", 450, 310, playerAgent);
-
         // Create a background
         background = new Background(world);
 
         // Create MovePerson instance and pass the soldierWalking character to it
         movePerson = new MovePerson(soldier);
         Gdx.input.setInputProcessor(movePerson);
+
+        // Create an enemy character
+        for (int e=0; e < 50; e++) {
+             enemies.add(new Enemy(world, 6, "characters\\Characters(100x100)\\Orc\\Orc\\Orc-Idle.png", 450, 310, playerAgent));
+        }
+//        enemy2 = new Enemy(world, 6, "characters\\Characters(100x100)\\Orc\\Orc\\Orc-Idle.png", 450, 310, playerAgent);
+//        enemy = new Enemy(world, 6, "characters\\Characters(100x100)\\Orc\\Orc\\Orc-Idle.png", 450, 310, playerAgent);
     }
 
     @Override
@@ -67,15 +74,22 @@ public class Main extends ApplicationAdapter {
         // Call MovePerson's Move() method to update the character's position
         movePerson.update(deltaTime);
 
-        enemy.update(deltaTime); // Update the enemy's position
-
+//        enemy.update(deltaTime); // Update the enemy's position
+//        enemy2.update(deltaTime); // Update the enemy's position
+        for (Enemy e: enemies) {
+            e.update(deltaTime);
+        }
         ScreenUtils.clear(1.0f, 0.75f, 0.80f, 1.0f); // RGB (255, 192, 203) -> (1.0, 0.75, 0.80)
 
         batch.begin();
         background.render(batch);
         // Render the current character depending on the state (idle or walking)
         soldier.render(batch);
-        enemy.render(batch);
+//        enemy.render(batch);
+//        enemy2.render(batch);
+        for (Enemy e: enemies) {
+            e.render(batch);
+        }
         batch.end();
         world.step(1/60f, 6, 2); // Step the physics world
         debugRenderer.render(world, batch.getProjectionMatrix());
@@ -88,6 +102,10 @@ public class Main extends ApplicationAdapter {
         background.dispose();
         world.dispose();
         debugRenderer.dispose();
-        enemy.dispose();
+        for (Enemy e: enemies) {
+            e.dispose();
+        }
+//        enemy.dispose();
+//        enemy2.dispose();
     }
 }
