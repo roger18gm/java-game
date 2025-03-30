@@ -15,11 +15,15 @@ public class MovePerson implements InputProcessor {
     private boolean movingRight = false;
     private boolean movingUp = false;
     private boolean movingDown = false;
-    private boolean attack = false;
+    public boolean attack = false;
     private final int SPEED = 60;
     private static final String WALKING_PATH = "characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Walk.png";
     private static final String IDLE_PATH = "characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Idle.png";
     private static final String ATTACK_PATH = "characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Attack02.png";
+    private static final String HURT_PATH = "characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Hurt.png";
+    public boolean damage = false; // Damage
+
+    public Enemy enemy;
 
 
     public MovePerson(Character character) {
@@ -31,7 +35,6 @@ public class MovePerson implements InputProcessor {
     public float GetX() {
         return character.getBody().getPosition().x;
     }
-
     public float GetY() {
         return character.getBody().getPosition().y;
     }
@@ -71,7 +74,7 @@ public class MovePerson implements InputProcessor {
                 public void run() {
                     attack = false;
                 }
-            }, 0.5f);
+            }, .5f);
         }
         return false;
     }
@@ -101,15 +104,20 @@ public class MovePerson implements InputProcessor {
 
         character.getBody().setLinearVelocity(velocity);
 
-        // Change images if moving
-        if (movingDown || movingUp || movingLeft || movingRight){
-            character.SetFilePath(WALKING_PATH, 8);
-        } else if (attack) {
-            character.SetFilePath(ATTACK_PATH, 6);
-        }
-        else
-        {
-            character.SetFilePath(IDLE_PATH, 6);
+
+        // If the character is taking damage, the hurt animation will play
+        if (damage) {
+            // Set hurt animation immediately
+            character.SetFilePath(HURT_PATH, 4);
+        } else {
+            // Update the character's movement and animations as normal
+            if (movingDown || movingUp || movingLeft || movingRight) {
+                character.SetFilePath(WALKING_PATH, 8); // Walking animation
+            } else if (attack) {
+                character.SetFilePath(ATTACK_PATH, 6); // Attack animation
+            } else {
+                character.SetFilePath(IDLE_PATH, 6); // Idle animation
+            }
         }
 
         character.update(deltaTime);

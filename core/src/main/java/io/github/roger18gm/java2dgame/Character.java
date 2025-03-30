@@ -64,7 +64,13 @@ public class Character {
             }
         }
 
-        animation = new Animation<>(0.1f, animationFrames); // Create the animation with frame time of 0.1f
+        // **Change the frame duration for hurt animation specifically**
+        if (filePath.contains("Hurt")) {  // Check if it's the hurt animation
+            animation = new Animation<>(0.2f, animationFrames); // Slow down hurt animation to 0.2s per frame
+        } else {
+            animation = new Animation<>(0.1f, animationFrames); // Normal speed for other animations
+        }
+
         stateTime = 0f; // Reset state time for animation
     }
 

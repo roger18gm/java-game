@@ -10,6 +10,8 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.sql.Struct;
+
 //import java.lang.classfile.attribute.CharacterRangeTableAttribute;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -39,6 +41,7 @@ public class Main extends ApplicationAdapter {
         enemy = new Enemy(orc);
 
 
+
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
         inputMultiplexer.addProcessor(movePerson);
@@ -58,7 +61,16 @@ public class Main extends ApplicationAdapter {
 
         ScreenUtils.clear(1.0f, 0.75f, 0.80f, 1.0f); // RGB (255, 192, 203) -> (1.0, 0.75, 0.80)
 
+        if (movePerson.GetX() <= enemy.GetX() && enemy.attack) {
+            movePerson.damage = true;
+        } else {
+            movePerson.damage = false;
+        }
+
+
+
         batch.begin();
+
         background.render(batch);
         soldier.render(batch);
         orc.render(batch);

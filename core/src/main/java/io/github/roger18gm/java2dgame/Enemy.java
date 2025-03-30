@@ -7,25 +7,33 @@ import com.badlogic.gdx.utils.Timer;
 
 public class Enemy implements InputProcessor{
     private Character character;  // Now accepts a character via constructor
+    private float x, y;
     private boolean movingLeft = false;
     private boolean movingRight = false;
     private boolean movingUp = false;
     private boolean movingDown = false;
-    private boolean attack = false;
+    public boolean attack = false;
     private final int SPEED = 60;
     private static final String WALKING_PATH = "characters\\Characters(100x100)\\Orc\\Orc\\Orc-Walk.png";
     private static final String IDLE_PATH = "characters\\Characters(100x100)\\Orc\\Orc\\Orc-Idle.png";
     private static final String ATTACK_PATH = "characters\\Characters(100x100)\\Orc\\Orc\\Orc-Attack02.png";
 
-    private MovePerson movePerson;
+    public MovePerson movePerson;
 
 
     public Enemy(Character character) {
         this.character = character;
+        this.x = character.GetX();
+        this.y = character.GetY();
         Gdx.input.setInputProcessor(this);
     }
 
-
+    public float GetX() {
+        return character.getBody().getPosition().x;
+    }
+    public float GetY() {
+        return character.getBody().getPosition().y;
+    }
 
 
     // Called when a key is pressed
@@ -106,6 +114,12 @@ public class Enemy implements InputProcessor{
 
         character.update(deltaTime);
     }
+
+
+
+
+
+
 
 
 
