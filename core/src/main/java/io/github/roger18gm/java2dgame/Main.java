@@ -31,8 +31,8 @@ public class Main extends ApplicationAdapter {
     private Background background;
     private NPC npc;
     private MoveNPC moveNPC;
-//    private Character orc;
-//    private Enemy enemy;
+    private Character orc;
+    private Enemy enemy;
     private Sound sound;
     private Music music;
 
@@ -55,16 +55,6 @@ public class Main extends ApplicationAdapter {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
-                // Add the MovePerson and Enemy InputProcessors to the InputMultiplexer
-//                InputMultiplexer inputMultiplexer = new InputMultiplexer();
-//
-//                inputMultiplexer.addProcessor(movePerson);
-//                inputMultiplexer.addProcessor(enemy);
-//                Gdx.input.setInputProcessor(inputMultiplexer);
-//
-//
-//                Gdx.app.log("Main", "InputProcessors added: MovePerson & Enemy");
                 // Start the game
                 startGame();
             }
@@ -84,7 +74,6 @@ public class Main extends ApplicationAdapter {
         table.center();
         table.add(playButton).padBottom(20).row();
         table.add(exitButton);
-
         // Add the table to the stage
         stage.addActor(table);
 
@@ -92,15 +81,15 @@ public class Main extends ApplicationAdapter {
         world = new World(new Vector2(0,0), true);
         debugRenderer = new Box2DDebugRenderer();
         batch = new SpriteBatch();
-        //FileHandle solderWalkFile = Gdx.files.internal("assets/characters/Characters(100x100)/Soldier/Soldier/Soldier-Walk.png");
+
         // Create MovePerson instance and pass the soldierWalking character to it
         soldier = new Character(world, "characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Walk.png", 100, 50, 6);
         movePerson = new MovePerson(soldier);
 
         background = new Background(world);
 
-//        orc = new Character(world, "characters\\Characters(100x100)\\Orc\\Orc\\Orc-Idle.png", 200, 200, 6);
-//        enemy = new Enemy(orc);
+        orc = new Character(world, "characters\\Characters(100x100)\\Orc\\Orc\\Orc-Idle.png", 200, 200, 6);
+        enemy = new Enemy(orc);
 
 
         npc = new NPC(world, "characters\\Characters(100x100)\\Orc\\Orc\\Orc-Walk.png", 200, 200, 8, soldier);
@@ -120,8 +109,14 @@ public class Main extends ApplicationAdapter {
         System.out.println("Game started!");
         stage.clear(); // Clear the stage
 
+        // Add the MovePerson and Enemy InputProcessors to the InputMultiplexer
+                InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
-        Gdx.input.setInputProcessor(movePerson); // Set the input processor to MovePerson
+                inputMultiplexer.addProcessor(enemy);
+                inputMultiplexer.addProcessor(movePerson);
+                Gdx.input.setInputProcessor(inputMultiplexer);
+                Gdx.app.log("Main", "InputProcessors added: MovePerson & Enemy");
+
     }
 
 
@@ -145,20 +140,20 @@ public class Main extends ApplicationAdapter {
             // Call MovePerson's Move() method to update the character's position
             float deltaTime = Gdx.graphics.getDeltaTime();
             movePerson.update(deltaTime);
-//            enemy.update(deltaTime);
-//            THIS IS A NO-NO~~~~~~moveNPC.update(deltaTime);
-//
-//            if (movePerson.GetX() <= enemy.GetX() && enemy.attack) {
-//                movePerson.damage = true;
-//            } else {
-//                movePerson.damage = false;
-//            }
+            npc.update(deltaTime);
+            enemy.update(deltaTime);
+//            THIS IS A NO-NO~~~~~~moveNPC.update(deltaTime);~~~~~~~~
+
+            if (movePerson.GetX() <= enemy.GetX() && enemy.attack) {
+                movePerson.damage = true;
+            } else {
+                movePerson.damage = false;
+            }
 
             batch.begin();
-            npc.update(deltaTime);
             background.render(batch);
             soldier.render(batch);
-//            orc.render(batch);
+            orc.render(batch);
             npc.render(batch);
             batch.end();
 
@@ -173,7 +168,7 @@ public class Main extends ApplicationAdapter {
         skin.dispose();
         batch.dispose();
         soldier.dispose();
-//        orc.dispose();
+        orc.dispose();
         background.dispose();
         world.dispose();
         debugRenderer.dispose();

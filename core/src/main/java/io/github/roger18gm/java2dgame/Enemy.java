@@ -25,7 +25,7 @@ public class Enemy implements InputProcessor{
         this.character = character;
         this.x = character.GetX();
         this.y = character.GetY();
-        Gdx.input.setInputProcessor(this);
+//        Gdx.input.setInputProcessor(this);
     }
 
     public float GetX() {
