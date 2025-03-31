@@ -1,28 +1,25 @@
 package io.github.roger18gm.java2dgame;
 
+import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import io.github.roger18gm.java2dgame.entities.Player;
-import io.github.roger18gm.java2dgame.movement.PlayerMovement;
 
-import java.awt.*;
-import java.lang.management.PlatformLoggingMXBean;
-
-public class Character {
-    private Texture characterSheet;
+public class Character implements Location<Vector2> {
+    protected Texture characterSheet;
     private Animation<TextureRegion> animation;
     private float stateTime;
     private int x, y;
     private int frameCols;
     private static final int FRAME_ROWS = 1;
     private String filePath;
-    private boolean facingLeft = false;  // To track if the character is facing left
-    private Body body;
+    protected boolean facingLeft = false;  // To track if the character is facing left
+    protected Body body;
+    private World world;
 
     // Constructor
     public Character(World world, String filepath, int x, int y, int frameCols) {
@@ -63,8 +60,13 @@ public class Character {
                 animationFrames[index++] = tempFrames[i][j];
             }
         }
-
-        animation = new Animation<>(0.1f, animationFrames); // Create the animation with frame time of 0.1f
+        // **Change the frame duration for hurt animation specifically**
+        if (filePath.contains("Hurt")) {  // Check if it's the hurt animation
+            animation = new Animation<>(0.2f, animationFrames); // Slow down hurt animation to 0.2s per frame
+        } else {
+            animation = new Animation<>(0.1f, animationFrames); // Normal speed for other animations
+        }
+//        animation = new Animation<>(0.1f, animationFrames); // Create the animation with frame time of 0.1f
         stateTime = 0f; // Reset state time for animation
     }
 
@@ -145,6 +147,40 @@ public class Character {
     // Set the direction the character is facing
     public void setFacingLeft(boolean facingLeft) {
         this.facingLeft = facingLeft;
+    }
+
+
+    // Implement the Location interface methods
+    @Override
+    public Vector2 getPosition() {
+        return body.getPosition();
+    }
+
+    @Override
+    public float getOrientation() {
+        return body.getAngle();
+    }
+
+    @Override
+    public void setOrientation(float orientation) {
+        body.setTransform(body.getPosition(), orientation);
+    }
+
+    @Override
+    public Location<Vector2> newLocation() {
+        return new Character(world, filePath, x, y, frameCols);
+    }
+
+    @Override
+    public float vectorToAngle(Vector2 vector) {
+        return (float) Math.atan2(-vector.x, vector.y);
+    }
+
+    @Override
+    public Vector2 angleToVector(Vector2 outVector, float angle) {
+        outVector.x = -(float) Math.sin(angle);
+        outVector.y = (float) Math.cos(angle);
+        return outVector;
     }
 }
 
