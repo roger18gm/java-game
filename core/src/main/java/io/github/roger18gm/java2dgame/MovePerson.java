@@ -11,6 +11,7 @@ public class MovePerson implements InputProcessor {
 
     private Character character;  // Now accepts a character via constructor
     private float x, y;
+    private int lifePoints;
     private boolean movingLeft = false;
     private boolean movingRight = false;
     private boolean movingUp = false;
@@ -21,22 +22,29 @@ public class MovePerson implements InputProcessor {
     private static final String IDLE_PATH = "characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Idle.png";
     private static final String ATTACK_PATH = "characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Attack02.png";
     private static final String HURT_PATH = "characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Hurt.png";
+    private static final String DEATH_PATH = "characters\\Characters(100x100)\\Soldier\\Soldier\\Soldier-Death.png";
     public boolean damage = false; // Damage
+    public boolean faceLeft = false;
 
-    public Enemy enemy;
 
 
     public MovePerson(Character character) {
         this.character = character;
         this.x = character.GetX();
         this.y = character.GetY();
+        this.lifePoints = character.getLife();
     }
 
     public float GetX() {
         return character.getBody().getPosition().x;
     }
-    public float GetY() {
-        return character.getBody().getPosition().y;
+
+    public int GetLife() {
+        return lifePoints;
+    }
+
+    public void setLifePoints() {
+        lifePoints = lifePoints - 1;
     }
 
     // Called when a key is pressed
@@ -81,17 +89,20 @@ public class MovePerson implements InputProcessor {
 
     // Update class that moves the character in Render in Main
     public void update(float deltaTime) {
+
         // new addition
         Vector2 velocity = new Vector2(0,0);
         if (movingLeft) {
 //            character.SetX(character.GetX() - 1); // Move Left
             velocity.x = -SPEED;
             character.setFacingLeft(true);           // Set character to face left
+            faceLeft = true;
         }
         if (movingRight) {
 //            character.SetX(character.GetX() + 1); // Move Right
             velocity.x = SPEED;
             character.setFacingLeft(false);          // Set character to face right
+            faceLeft = false;
         }
         if (movingUp) {
 //            character.SetY(character.GetY() + 1); // Move Up
@@ -106,9 +117,10 @@ public class MovePerson implements InputProcessor {
 
 
         // If the character is taking damage, the hurt animation will play
-        if (damage) {
+        if (damage && character.getLife() != 0) {
             // Set hurt animation immediately
             character.SetFilePath(HURT_PATH, 4);
+            setLifePoints();
         } else {
             // Update the character's movement and animations as normal
             if (movingDown || movingUp || movingLeft || movingRight) {
@@ -118,6 +130,10 @@ public class MovePerson implements InputProcessor {
             } else {
                 character.SetFilePath(IDLE_PATH, 6); // Idle animation
             }
+        }
+
+        if (character.getLife() == 0) {
+            character.SetFilePath(DEATH_PATH, 4);
         }
 
         character.update(deltaTime);

@@ -23,12 +23,14 @@ public class Character {
     private String filePath;
     private boolean facingLeft = false;  // To track if the character is facing left
     private Body body;
+    private int lifePoints;
 
     // Constructor
-    public Character(World world, String filepath, int x, int y, int frameCols) {
+    public Character(World world, String filepath, int x, int y, int frameCols, int lifePoints) {
         this.frameCols = frameCols;
         this.filePath = filepath;
         characterSheet = new Texture(Gdx.files.absolute(filepath));
+        this.lifePoints = lifePoints;
         createAnimationFrames();
 
         // Create Box2D body
@@ -39,7 +41,6 @@ public class Character {
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(15, 15); // Adjust size as needed
-//        shape.setAsBox(10, 15); // Adjust size as needed
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -98,6 +99,13 @@ public class Character {
         }
     }
 
+    public int getLife(){
+        return lifePoints;
+    }
+    public void setLifePoints() {
+        setLifePoints();
+    }
+
     public Body getBody() {
         return body;
     }
@@ -112,22 +120,10 @@ public class Character {
         return x;
     }
 
-    public void SetX(int x) {
-        this.x = x;
-    }
-
     public int GetY() {
         return y;
     }
 
-    public void SetY(int y) {
-        this.y = y;
-    }
-
-    // Getter and Setter for the file path (also reloads texture and animation frames)
-    public String GetFilePath() {
-        return this.filePath;
-    }
 
     public void SetFilePath(String filePath, int frameCols) {
         if (!this.filePath.equals(filePath)) {
