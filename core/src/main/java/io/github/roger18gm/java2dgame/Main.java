@@ -23,6 +23,7 @@ public class Main extends ApplicationAdapter {
     private ArrayList<HealthItem> healthItems; // List of hearts on screen
     private Texture heartTexture; // Heart texture
     private Rectangle playerBox; // Player's collision box
+    private Texture flagTexture;
 
     private float spawnTimer; // Timer for heart spawning
 
@@ -46,6 +47,7 @@ public class Main extends ApplicationAdapter {
         // Initialize health items
         healthItems = new ArrayList<>();
         heartTexture = new Texture("C:\\Users\\austi\\IdeaProjects\\java-game\\core\\src\\main\\java\\items\\heart pixel art 16x16.png"); // Replace with actual heart texture path
+        flagTexture = new Texture("C:\\Users\\austi\\IdeaProjects\\java-game\\assets\\tiles\\PNG\\Props\\Flag_A.png");
 
         // Initial player box
         playerBox = new Rectangle(100, 100, 50, 50); // Example player position and size
