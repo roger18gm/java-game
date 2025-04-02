@@ -4,10 +4,12 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -16,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.graphics.Texture;
 
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -30,6 +33,7 @@ public class Main extends ApplicationAdapter {
     private Background background;
     private Sound sound;
     private Music music;
+    private Texture menuBackgroundImg;
 //    private NPC npc;
 
     // The default is that the soldier hasn't attacked yet
@@ -38,13 +42,16 @@ public class Main extends ApplicationAdapter {
     @Override
     public void create() {
 
+        menuBackgroundImg = new Texture(Gdx.files.internal("Orc Runner.png"));
+
+
         // UI components
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-//        skin = new Skin(Gdx.files.internal("ui/pixthulhuui/pixthulhu-ui.json"));
-        skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        skin = new Skin(Gdx.files.internal("ui/skin/plain-james-ui.json"));
 
         TextButton playButton = new TextButton("Play", skin);
+        playButton.setSize(600, 200);
         TextButton exitButton = new TextButton("Exit", skin);
 
         // Add listeners to buttons
@@ -108,6 +115,11 @@ public class Main extends ApplicationAdapter {
         ScreenUtils.clear(0.08f, 0.07f, 0.23f, 1.0f); // RGB (255, 192, 203) -> (1.0, 0.75, 0.80)
 
         if (Gdx.input.getInputProcessor() == stage) {
+
+            batch.begin();
+            batch.draw(menuBackgroundImg, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            batch.end();
+
             // Draw the stage
             stage.act();
             stage.draw();
@@ -145,6 +157,7 @@ public class Main extends ApplicationAdapter {
         world.dispose();
         debugRenderer.dispose();
         music.dispose();
+        menuBackgroundImg.dispose();
         sound.dispose();
     }
 }
