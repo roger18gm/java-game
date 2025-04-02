@@ -2,42 +2,49 @@ package items;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
 public class FlagItem extends BaseItem {
+    private boolean isCarried; // Tracks if the flag is being carried by the player
 
     public FlagItem(float x, float y, float width, float height, Texture texture) {
         super(false, 0, true, "Flag", "Get it to the circle!", x, y, width, height, texture);
+        this.isCarried = false; // Initially, the flag is not carried
     }
 
-    // Render the health item on the screen
+    // Static factory method to create a FlagItem
+    public static FlagItem createFlag(Texture flagTexture) {
+        float x = 525; // Example X coordinate
+        float y = 200; // Example Y coordinate
+        float width = 60;
+        float height = 60;
+        return new FlagItem(x, y, width, height, flagTexture);
+    }
+
     public void render(SpriteBatch batch) {
-        if (canPickup()) {
-            batch.draw(getTexture(), getPickupBox().x, getPickupBox().y, getPickupBox().width, getPickupBox().height);
-        }
+        batch.draw(getTexture(), getPickupBox().x, getPickupBox().y, getPickupBox().width, getPickupBox().height);
     }
 
-    // Check collision with player
     public boolean isColliding(Rectangle playerBox) {
-        System.out.println("Flag PickupBox: " + getPickupBox());
-        System.out.println("Player box: " + playerBox);
         return getPickupBox().overlaps(playerBox);
     }
 
-    public static FlagItem createFlag(Texture flagTexture) {
-        float x = 200; // Fixed position or specific location
-        float y = 300;
-
-        FlagItem flag = new FlagItem();
-        flag.setName("Flag");
-        flag.setDescription("Get it to the circle!");
-        flag.setPickupBox(x, y, 30, 30); // Set collision box dimensions
-        flag.setTexture(flagTexture); // Set flag texture
-        return flag;
+    public void carry(float playerX, float playerY) {
+        setPickupBox(playerX, playerY, getPickupBox().width, getPickupBox().height);
     }
 
-    // Dispose of resources
+    public void drop() {
+        isCarried = false;
+    }
+
+    public boolean isCarried() {
+        return isCarried;
+    }
+
+    public void setCarried(boolean isCarried) {
+        this.isCarried = isCarried;
+    }
+
     public void dispose() {
         if (getTexture() != null) {
             getTexture().dispose();
