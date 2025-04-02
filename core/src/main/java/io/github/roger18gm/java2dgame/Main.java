@@ -1,13 +1,11 @@
 package io.github.roger18gm.java2dgame;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -51,8 +49,16 @@ public class Main extends ApplicationAdapter {
     ArrayList<WanderEnemy> wanderEnemies = new ArrayList<>();
     private Random random;
 
+    private FlagItem flag; // single flag item
+
+    private Rectangle dropZone; // Drop zone for flag
+    private Texture menuBackgroundImg;
+
+
     @Override
     public void create() {
+
+        menuBackgroundImg = new Texture(Gdx.files.internal("OrcRunner.png"));
 
         // UI components
         stage = new Stage(new ScreenViewport());
@@ -138,6 +144,9 @@ public class Main extends ApplicationAdapter {
             healthItems.add(HeartSpawner.createRandomHeart(heartTexture, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         }
 
+        // Create a drop zone for the flag
+        flag = FlagItem.createFlag(flagTexture); // Create a flag item
+
         // Create a SteeringAgent for the player
         SteeringAgent playerAgent = new SteeringAgent(soldier.getBody());
 
@@ -166,6 +175,11 @@ public class Main extends ApplicationAdapter {
         ScreenUtils.clear(1.0f, 0.75f, 0.80f, 1.0f); // RGB (255, 192, 203) -> (1.0, 0.75, 0.80)
 
         if (Gdx.input.getInputProcessor() == stage) {
+
+            batch.begin();
+            batch.draw(menuBackgroundImg, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            batch.end();
+
             // Draw the stage
             stage.act();
             stage.draw();
@@ -219,6 +233,31 @@ public class Main extends ApplicationAdapter {
 //                movePerson.update(deltaTime);
 //                background.update(deltaTime);
 
+                Rectangle soldierRectangle = new Rectangle(soldier.getPosition().x, soldier.getPosition().y, 1, 1);
+
+                // Flag interaction logic
+                if (flag != null) {
+                    // Flag pickup logic
+                    if (flag.isColliding(soldierRectangle) && !flag.isCarried()) {
+                        System.out.println("Flag picked up!");
+                        flag.setCarried(true); // Set flag to be carried
+                    }
+
+                    // If the flag is carried, move it with the player
+                    if (flag.isCarried()) {
+                        flag.carry(soldier.getPosition().x, soldier.getPosition().y); // Attach flag to player position
+                    }
+
+
+                    // Drop the flag if player is in the drop zone and presses SPACE
+                    if (flag.isCarried() && soldierRectangle.overlaps(dropZone)) {
+                        if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+                            System.out.println("Flag successfully dropped in the zone!");
+                            flag.drop(); // Change flag state to "not carried"
+                        }
+                    }
+                }
+
             }
 
 // Render game objects
@@ -269,7 +308,7 @@ public class Main extends ApplicationAdapter {
         sound.dispose();
         npc.dispose();
 
-        for (WanderEnemy e: wanderEnemies) {
+        for (WanderEnemy e: wanderEnemies   ) {
             e.dispose();
         }
 
@@ -279,6 +318,7 @@ public class Main extends ApplicationAdapter {
         }
         heartTexture.dispose();
         flagTexture.dispose();
+        menuBackgroundImg.dispose();
 
     }
 }
