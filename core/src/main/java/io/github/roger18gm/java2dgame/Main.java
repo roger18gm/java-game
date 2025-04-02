@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -18,6 +19,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
@@ -38,6 +42,17 @@ public class Main extends ApplicationAdapter {
 
     // The default is that the soldier hasn't attacked yet
     private boolean attackSoundPlayed = false;
+
+
+    private Inventory inventory; // inventory system
+    public static boolean isPaused = false;
+
+    private ArrayList<HealthItem> healthItems; // list of hearts on screen
+    private Texture heartTexture; // heart texture
+    private Texture flagTexture; // flag texture
+    private float spawnTimer;
+
+
 
     @Override
     public void create() {
@@ -103,20 +118,43 @@ public class Main extends ApplicationAdapter {
         music.setLooping(true);
         music.play();
 
+
+
+
+        Skin skin = new Skin(Gdx.files.internal("ui\\uiskin.json"));
+
+        // Initialize health items
+        healthItems = new ArrayList<>();
+        heartTexture = new Texture("heart pixel art 16x16.png"); // Replace with actual heart texture path
+        flagTexture = new Texture("tiles/PNG/Props/Flag_A.png");
+
+
     }
     void startGame() {
         // Start the game
         System.out.println("Game started!");
         stage.clear(); // Clear the stage
 
+        // Initialize the inventory system
+        inventory = new Inventory();
+
+        // Spawn some initial hearts
+//        for (int i = 0; i < 5; i++) {
+//            healthItems.add(HeartSpawner.createRandomHeart(heartTexture, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+//        }
+
+
         // Add the MovePerson and Enemy InputProcessors to the InputMultiplexer
-                InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
-                inputMultiplexer.addProcessor(enemy);
-                inputMultiplexer.addProcessor(movePerson);
-                Gdx.input.setInputProcessor(inputMultiplexer);
-                Gdx.app.log("Main", "InputProcessors added: MovePerson & Enemy");
+        inputMultiplexer.addProcessor(enemy);
+        inputMultiplexer.addProcessor(movePerson);
+        inputMultiplexer.addProcessor(inventory.getStage());
+        Gdx.input.setInputProcessor(inputMultiplexer);
+        Gdx.app.log("Main", "InputProcessors added: MovePerson & Enemy");
 
+        isPaused = false; // Game starts unpaused
+        spawnTimer = 0;   // Initialize spawn timer
     }
 
 
@@ -150,7 +188,38 @@ public class Main extends ApplicationAdapter {
                 movePerson.damage = false;
             }
 
-            batch.begin();
+
+            // Update spawn timer and spawn hearts periodically
+            spawnTimer += deltaTime;
+            if (spawnTimer > 5) { // Spawn a new heart every 5 seconds
+                healthItems.add(HeartSpawner.createRandomHeart(heartTexture, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+                spawnTimer = 0; // Reset spawn timer
+            }
+//
+//            // Collision detection: Check for player pickup
+//            Iterator<HealthItem> iterator = healthItems.iterator();
+//            while (iterator.hasNext()) {
+//                HealthItem heart = iterator.next();
+//                if (heart.isColliding(playerBox)) {
+//                    System.out.println("Collision detected with heart at: " +heart.getPickupBox());
+//                    heart.applyEffect(); // Apply health effect
+//                    iterator.remove();   // Remove heart after pickup
+//                }
+//            }
+//            batch.begin();
+//            for (HealthItem heart : healthItems) {
+//                heart.render(batch);
+//            }
+//            batch.end();
+//
+//            // Update game elements only when not paused
+//            if (!isPaused) {
+//                movePerson.update(deltaTime);
+//                background.update(deltaTime);
+
+
+
+                batch.begin();
             background.render(batch);
             soldier.render(batch);
             orc.render(batch);
