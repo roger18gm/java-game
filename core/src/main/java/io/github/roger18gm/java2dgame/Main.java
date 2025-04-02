@@ -139,9 +139,9 @@ public class Main extends ApplicationAdapter {
         inventory = new Inventory();
 
         // Spawn some initial hearts
-//        for (int i = 0; i < 5; i++) {
-//            healthItems.add(HeartSpawner.createRandomHeart(heartTexture, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-//        }
+        for (int i = 0; i < 5; i++) {
+            healthItems.add(HeartSpawner.createRandomHeart(heartTexture, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        }
 
 
         // Add the MovePerson and Enemy InputProcessors to the InputMultiplexer
@@ -168,34 +168,8 @@ public class Main extends ApplicationAdapter {
             stage.draw();
 //            return;
         } else {
-            // Plays sword sound only once per click
-            if (movePerson.isAttacking() && !attackSoundPlayed) {
-                sound.play(1.0f); // Play sound only once per click
-                attackSoundPlayed = true; // Because the soldier has attacked once it won't repeat the sound
-            } else if (!movePerson.isAttacking()) {
-                attackSoundPlayed = false; // Reset so sound can play on the next attack
-            }
-            // Call MovePerson's Move() method to update the character's position
             float deltaTime = Gdx.graphics.getDeltaTime();
-            movePerson.update(deltaTime);
-            npc.update(deltaTime);
-            enemy.update(deltaTime);
-//            THIS IS A NO-NO~~~~~~moveNPC.update(deltaTime);~~~~~~~~
 
-            if (movePerson.GetX() <= enemy.GetX() && enemy.attack) {
-                movePerson.damage = true;
-            } else {
-                movePerson.damage = false;
-            }
-
-
-            // Update spawn timer and spawn hearts periodically
-            spawnTimer += deltaTime;
-            if (spawnTimer > 5) { // Spawn a new heart every 5 seconds
-                healthItems.add(HeartSpawner.createRandomHeart(heartTexture, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-                spawnTimer = 0; // Reset spawn timer
-            }
-//
 //            // Collision detection: Check for player pickup
 //            Iterator<HealthItem> iterator = healthItems.iterator();
 //            while (iterator.hasNext()) {
@@ -206,25 +180,64 @@ public class Main extends ApplicationAdapter {
 //                    iterator.remove();   // Remove heart after pickup
 //                }
 //            }
-//            batch.begin();
-//            for (HealthItem heart : healthItems) {
-//                heart.render(batch);
-//            }
-//            batch.end();
-//
-//            // Update game elements only when not paused
-//            if (!isPaused) {
+
+            // Update game elements only when not paused
+            if (!isPaused) {
+
+                // Plays sword sound only once per click
+                if (movePerson.isAttacking() && !attackSoundPlayed) {
+                    sound.play(1.0f); // Play sound only once per click
+                    attackSoundPlayed = true; // Because the soldier has attacked once it won't repeat the sound
+                } else if (!movePerson.isAttacking()) {
+                    attackSoundPlayed = false; // Reset so sound can play on the next attack
+                }
+                // Call MovePerson's Move() method to update the character's position
+                movePerson.update(deltaTime);
+                npc.update(deltaTime);
+                enemy.update(deltaTime);
+//            THIS IS A NO-NO~~~~~~moveNPC.update(deltaTime);~~~~~~~~
+
+                if (movePerson.GetX() <= enemy.GetX() && enemy.attack) {
+                    movePerson.damage = true;
+                } else {
+                    movePerson.damage = false;
+                }
+
+                // Update spawn timer and spawn hearts periodically
+                spawnTimer += deltaTime;
+                if (spawnTimer > 5) { // Spawn a new heart every 5 seconds
+                    healthItems.add(HeartSpawner.createRandomHeart(heartTexture, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+                    spawnTimer = 0; // Reset spawn timer
+                }
 //                movePerson.update(deltaTime);
 //                background.update(deltaTime);
 
+            }
 
-
-                batch.begin();
+// Render game objects
+            batch.begin();
             background.render(batch);
-            soldier.render(batch);
-            orc.render(batch);
-            npc.render(batch);
+            if (!isPaused) {
+                soldier.render(batch); // Render soldier only when not paused
+                orc.render(batch);
+                npc.render(batch);
+            }
+
+            // Render health items
+            for (HealthItem heart : healthItems) {
+                heart.render(batch);
+            }
             batch.end();
+            // Render inventory elements
+            inventory.render(deltaTime);
+
+//            batch.begin();
+//            background.render(batch);
+//            soldier.render(batch);
+//            orc.render(batch);
+//            npc.render(batch);
+//            batch.end();
+
 
             world.step(1 / 60f, 6, 2); // Step the physics world
             debugRenderer.render(world, batch.getProjectionMatrix());
@@ -244,5 +257,13 @@ public class Main extends ApplicationAdapter {
         music.dispose();
         sound.dispose();
         npc.dispose();
+
+        // Dispose of health item textures
+        for (HealthItem heart : healthItems) {
+            heart.dispose();
+        }
+        heartTexture.dispose();
+        flagTexture.dispose();
+
     }
 }
