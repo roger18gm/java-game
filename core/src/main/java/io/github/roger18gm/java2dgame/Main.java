@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
@@ -39,20 +40,16 @@ public class Main extends ApplicationAdapter {
     private Enemy enemy;
     private Sound sound;
     private Music music;
-
     // The default is that the soldier hasn't attacked yet
     private boolean attackSoundPlayed = false;
-
-
     private Inventory inventory; // inventory system
     public static boolean isPaused = false;
-
     private ArrayList<HealthItem> healthItems; // list of hearts on screen
     private Texture heartTexture; // heart texture
     private Texture flagTexture; // flag texture
     private float spawnTimer;
-
-
+    ArrayList<WanderEnemy> wanderEnemies = new ArrayList<>();
+    private Random random;
 
     @Override
     public void create() {
@@ -119,9 +116,7 @@ public class Main extends ApplicationAdapter {
         music.play();
 
 
-
-
-        Skin skin = new Skin(Gdx.files.internal("ui\\uiskin.json"));
+//        Skin skin = new Skin(Gdx.files.internal("ui\\uiskin.json"));
 
         // Initialize health items
         healthItems = new ArrayList<>();
@@ -143,6 +138,14 @@ public class Main extends ApplicationAdapter {
             healthItems.add(HeartSpawner.createRandomHeart(heartTexture, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         }
 
+        // Create a SteeringAgent for the player
+        SteeringAgent playerAgent = new SteeringAgent(soldier.getBody());
+
+        random = new Random();
+        // Create an enemy character
+        for (int e=0; e < random.nextInt(10); e++) {
+            wanderEnemies.add(new WanderEnemy(world, 6, "characters\\Characters(100x100)\\Orc\\Orc\\Orc-Idle.png", random.nextInt(950), random.nextInt(700), playerAgent));
+        }
 
         // Add the MovePerson and Enemy InputProcessors to the InputMultiplexer
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
@@ -195,6 +198,10 @@ public class Main extends ApplicationAdapter {
                 movePerson.update(deltaTime);
                 npc.update(deltaTime);
                 enemy.update(deltaTime);
+
+                for (WanderEnemy e: wanderEnemies) {
+                    e.update(deltaTime);
+                }
 //            THIS IS A NO-NO~~~~~~moveNPC.update(deltaTime);~~~~~~~~
 
                 if (movePerson.GetX() <= enemy.GetX() && enemy.attack) {
@@ -221,6 +228,10 @@ public class Main extends ApplicationAdapter {
                 soldier.render(batch); // Render soldier only when not paused
                 orc.render(batch);
                 npc.render(batch);
+            }
+
+            for (WanderEnemy e: wanderEnemies) {
+                e.render(batch);
             }
 
             // Render health items
@@ -257,6 +268,10 @@ public class Main extends ApplicationAdapter {
         music.dispose();
         sound.dispose();
         npc.dispose();
+
+        for (WanderEnemy e: wanderEnemies) {
+            e.dispose();
+        }
 
         // Dispose of health item textures
         for (HealthItem heart : healthItems) {

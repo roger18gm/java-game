@@ -35,7 +35,7 @@ public class NPC extends Character implements Steerable<Vector2> {
 
         // Set maximum speeds and accelerations
 
-        this.linearSpeed = 50000;
+        this.linearSpeed = 60000;
         this.linearAcceleration = 50000;
         setMaxLinearSpeed(linearSpeed);
         setMaxLinearAcceleration(linearAcceleration);
@@ -131,6 +131,7 @@ public class NPC extends Character implements Steerable<Vector2> {
 
     @Override
     public void setMaxLinearSpeed(float maxLinearSpeed) {
+        this.linearSpeed = maxLinearSpeed;
     }
 
     @Override
@@ -140,6 +141,7 @@ public class NPC extends Character implements Steerable<Vector2> {
 
     @Override
     public void setMaxLinearAcceleration(float maxLinearAcceleration) {
+        this.linearAcceleration = maxLinearAcceleration;
     }
 
     @Override
