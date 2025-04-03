@@ -26,6 +26,7 @@ public class MovePerson  implements InputProcessor {
     public boolean damage = false; // Damage
     public Enemy enemy;
 
+    public boolean faceLeft = false;
 
     public MovePerson(Character character) {
         this.character = character;

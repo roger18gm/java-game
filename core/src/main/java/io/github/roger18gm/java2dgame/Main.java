@@ -290,7 +290,7 @@ public class Main extends ApplicationAdapter {
 
 
             world.step(1 / 60f, 6, 2); // Step the physics world
-            debugRenderer.render(world, batch.getProjectionMatrix());
+//            debugRenderer.render(world, batch.getProjectionMatrix());
         }
     }
 
