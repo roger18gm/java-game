@@ -8,53 +8,53 @@ import com.badlogic.gdx.physics.box2d.*;
 public class Background {
     private final World world;
     private final Texture[] textures;
-//    private final Texture dirtTileA, dirtTileB, grassTileA, grassTileB, mudTileA, mudTileB, buildingTileA,
+    //    private final Texture dirtTileA, dirtTileB, grassTileA, grassTileB, mudTileA, mudTileB, buildingTileA,
 //        stoneTileTopLeft, stoneTileTop, stoneTileTopRight, stoneTileLeft, stoneTileBotLeft, stoneTileBot,
 //        stoneTileBotRight, stoneTileRight, stoneTileCenter, longHedge, shortHedge, log, flag, target;
     private int tileSize = 46;
 
     //     Draws each tile on the screen in the form of a grid
     private int[][] tileGrid = { // h 16 X w 22
-        {1, 2, 1, 2, 1, 2, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 2, 2, 1, 2, 2, 2},
-        {1, 3, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 3, 1},
-        {1, 3, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 4, 1},
-        {1, 3, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 3, 2},
-        {1, 4, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 3, 3, 4, 4, 4, 1},
-        {1, 3, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 3, 4, 3, 1},
-        {1, 4, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 3, 1},
-        {1, 4, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 8, 9, 10, 3, 1},
-        {1, 4, 3, 4, 3, 4, 3, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 11, 12, 13, 3, 1},
-        {1, 3, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 14, 15, 16, 3, 1},
-        {1, 4, 3, 4, 4, 4, 3, 4, 3, 3, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 1},
-        {1, 4, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 4, 1},
-        {1, 3, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 4, 1},
-        {1, 4, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 3, 1},
-        {1, 3, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 4, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1 }
+        {3, 3, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 4, 3},
+        {4, 3, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 3, 3},
+        {4, 3, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 4, 3},
+        {3, 3, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 3, 3},
+        {4, 4, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 3, 3, 4, 4, 4, 4},
+        {4, 3, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 3, 4, 3, 4},
+        {3, 4, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 3, 4},
+        {3, 4, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 8, 9, 10, 3, 4},
+        {4, 4, 3, 4, 3, 4, 3, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 11, 12, 13, 3, 3},
+        {3, 3, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 14, 15, 16, 3, 4},
+        {4, 4, 3, 4, 4, 4, 3, 4, 3, 3, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 4},
+        {3, 4, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 4, 3},
+        {4, 3, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 4, 4},
+        {4, 4, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 3, 3},
+        {3, 3, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 4, 4},
+        {3, 3, 4, 4, 3, 3, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 4, 4, 4, 3, 4, 4 }
 
     };
     private int[][] propGrid = {
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {8, 0, 0, 7, 0, 0, 0, 4, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0},
-        {2, 0, 0, 7, 0, 0, 0, 4, 0, 0, 4, 0, 0, 7, 0, 0, 0, 0, 4, 0, 0, 0},
-        {0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 4, 0},
-        {0, 0, 2, 0, 2, 0, 0, 4, 0, 0, 4, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 6, 6, 0, 0, 0},
-        {0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 5, 0, 5, 0, 0, 0, 0, 6, 0, 0, 0},
-        {0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 4, 0, 0, 7, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 0},
-        {0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+        {9, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12},
+        {14, 8, 0, 7, 0, 0, 0, 4, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 16},
+        {14, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 16},
+        {14, 5, 0, 7, 0, 0, 0, 4, 0, 0, 4, 0, 0, 7, 0, 0, 0, 0, 4, 0, 0, 16},
+        {14, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 7, 16},
+        {14, 2, 0, 2, 0, 0, 0, 4, 0, 0, 4, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 16},
+        {14, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16},
+        {14, 0, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16},
+        {14, 5, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 6, 0, 0, 16},
+        {14, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 5, 0, 5, 0, 0, 0, 0, 0, 0, 16},
+        {14, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 16},
+        {14, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16},
+        {14, 4, 0, 0, 7, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 16},
+        {14, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2, 16},
+        {14, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16},
+        {10, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 11}
     };
 
     public Background(World world){
         this.world = world;
-//        Initializes the tiles
+        // Initializes the tiles
         textures = new Texture[] {
 
             new Texture("tiles/PNG/Tiles/grass-a.png"), // 1
@@ -77,29 +77,9 @@ public class Background {
             new Texture("tiles/PNG/Blocks/short-hedge.png"), // 18
             new Texture("tiles/PNG/Props/Log.png"), // 19
             new Texture("tiles/PNG/Props/Flag_A.png"), // 20
-            new Texture("tiles/PNG/Props/Dot_A.png") // 21
-
-//        grassTileA = new Texture("tiles/PNG/Tiles/grass-a.png");
-//        grassTileB = new Texture("tiles/PNG/Tiles/grass-b.png");
-//        dirtTileA = new Texture("tiles/PNG/Tiles/dirt-a.png");
-//        dirtTileB = new Texture("tiles/PNG/Tiles/dirt-b.png");
-//        mudTileA = new Texture("tiles/PNG/Tiles/mud-a.png");
-//        mudTileB = new Texture("tiles/PNG/Tiles/mud-b.png");
-//        buildingTileA = new Texture("tiles/PNG/Buildings/Building_A_01.png");
-//        stoneTileTopLeft = new Texture("tiles/PNG/Decor_Tiles/Decor_Tile_B_01.png");
-//        stoneTileTop = new Texture("tiles/PNG/Decor_Tiles/Decor_Tile_B_02.png");
-//        stoneTileTopRight = new Texture("tiles/PNG/Decor_Tiles/Decor_Tile_B_03.png");
-//        stoneTileLeft = new Texture("tiles/PNG/Decor_Tiles/Decor_Tile_B_04.png");
-//        stoneTileCenter = new Texture("tiles/PNG/Decor_Tiles/Decor_Tile_B_05.png");
-//        stoneTileRight = new Texture("tiles/PNG/Decor_Tiles/Decor_Tile_B_06.png");
-//        stoneTileBotLeft = new Texture("tiles/PNG/Decor_Tiles/Decor_Tile_B_07.png");
-//        stoneTileBot = new Texture("tiles/PNG/Decor_Tiles/Decor_Tile_B_08.png");
-//        stoneTileBotRight = new Texture("tiles/PNG/Decor_Tiles/Decor_Tile_B_09.png");
-//        longHedge = new Texture("tiles/PNG/Blocks/long-hedge.png");
-//        shortHedge = new Texture("tiles/PNG/Blocks/short-hedge.png");
-//        log = new Texture("tiles/PNG/Props/Log.png");
-//        flag = new Texture("tiles/PNG/Props/Flag_A.png");
-//        target = new Texture("tiles/PNG/Props/Dot_A.png");
+            new Texture("tiles/PNG/Props/Dot_A.png"), // 21
+            new Texture("tiles/PNG/Hedges/Hedge_B_01.png"), // 22
+            new Texture("tiles/PNG/Hedges/Hedge_B_02.png") // 23
         };
         createStaticBodies();
     }
@@ -113,7 +93,7 @@ public class Background {
                     createStaticBody(col * tileSize, (propGrid.length - 1 - row) * tileSize, tileSize, tileSize * 2);
                 }
                 if (propGrid[row][col] == (5)) { // the horizontal logs
-                    createStaticBody(col * tileSize, (propGrid.length - 1 - row) * tileSize, tileSize * 2, tileSize);
+                    createStaticBody(col * tileSize - 45, (propGrid.length - 1 - row) * tileSize, tileSize * 2, tileSize);
                 }
 //                if (propGrid[row][col] == (6)) { // the flags
 //                    createStaticBody(col * tileSize, (propGrid.length - 1 - row) * tileSize, tileSize * 2, tileSize * 2);
@@ -123,8 +103,17 @@ public class Background {
                     createStaticBody(col * tileSize, (propGrid.length - 1 - row) * tileSize, tileSize, tileSize * 2);
                 }
 
-                if (propGrid[row][col] == (8)) { // the red target thing
-                    createStaticBody(col * tileSize, (propGrid.length - 1 - row) * tileSize, tileSize * 2, tileSize * 2);
+                if (propGrid[row][col] == (14)) { // Left side border
+                    createStaticBody(col * tileSize - 10, (propGrid.length - 1 - row) * tileSize - 25, tileSize / 3, tileSize * 2);
+                }
+                if (propGrid[row][col] == (16)) { // right side border
+                    createStaticBody(col * tileSize + 30, (propGrid.length - 1 - row) * tileSize - 25, tileSize / 3, tileSize * 2);
+                }
+                if (propGrid[row][col] == (15)) { // bottom border
+                    createStaticBody(col * tileSize - 20, (propGrid.length - 1 - row) * tileSize - 10, tileSize * 2, tileSize / 3);
+                }
+                if (propGrid[row][col] == (13)) { // top border
+                    createStaticBody(col * tileSize - 25, (propGrid.length - 1 - row) * tileSize + 35, tileSize * 2, tileSize / 3);
                 }
             }
         }
@@ -158,56 +147,6 @@ public class Background {
                     batch.draw(textures[tileGrid[row][col] - 1], x, y, tileSize, tileSize);
 //                    batch.draw(textures[propGrid[row][col] - 1], x, y, tileSize, tileSize); // this no workie
                 }
-//                 Determines which tile corresponds with each number in the grid
-//                if (tileGrid[row][col] == 1){
-//                    // tilesize, tilesize, sets the dimensions to be different than the origional
-//                    batch.draw(grassTileA, x, y, tileSize, tileSize);
-//                }
-//                else if (tileGrid[row][col] == 2){
-//                    batch.draw(grassTileB, x, y, tileSize, tileSize);
-//                }
-//                else if (tileGrid[row][col] == 3){
-//                    batch.draw(dirtTileA, x, y, tileSize, tileSize);
-//                }
-//                else if (tileGrid[row][col] == 4){
-//                    batch.draw(dirtTileB, x, y, tileSize, tileSize);
-//                }
-//                else if (tileGrid[row][col] == 5){
-//                    batch.draw(mudTileA, x, y, tileSize, tileSize);
-//                }
-//                else if (tileGrid[row][col] == 6){
-//                    batch.draw(mudTileB, x, y, tileSize, tileSize);
-//                }
-//                else if (tileGrid[row][col] == 7){
-//                    batch.draw(buildingTileA, x, y, tileSize, tileSize);
-//                }
-//                else if (tileGrid[row][col] == 8){
-//                    batch.draw(stoneTileTopLeft, x, y, tileSize, tileSize);
-//                }
-//                else if (tileGrid[row][col] == 9){
-//                    batch.draw(stoneTileTop, x, y, tileSize, tileSize);
-//                }
-//                else if (tileGrid[row][col] == 10){
-//                    batch.draw(stoneTileTopRight, x, y, tileSize, tileSize);
-//                }
-//                else if (tileGrid[row][col] == 11){
-//                    batch.draw(stoneTileLeft, x, y, tileSize, tileSize);
-//                }
-//                else if (tileGrid[row][col] == 12){
-//                    batch.draw(stoneTileCenter, x, y, tileSize, tileSize);
-//                }
-//                else if (tileGrid[row][col] == 13){
-//                    batch.draw(stoneTileRight, x, y, tileSize, tileSize);
-//                }
-//                else if (tileGrid[row][col] == 14){
-//                    batch.draw(stoneTileBotLeft, x, y, tileSize, tileSize);
-//                }
-//                else if (tileGrid[row][col] == 15){
-//                    batch.draw(stoneTileBot, x, y, tileSize, tileSize);
-//                }
-//                else if (tileGrid[row][col] == 16){
-//                    batch.draw(stoneTileBotRight, x, y, tileSize, tileSize);
-//                }
             }
         }
 
@@ -221,6 +160,8 @@ public class Background {
             Texture log = textures[18];
             Texture flag = textures[19];
             Texture target = textures[20];
+            Texture corner = textures[21];
+            Texture border = textures[22];
 
             for (int col = 0; col < tileGrid[row].length; col++){
 
@@ -244,10 +185,21 @@ public class Background {
                         longHedge.getWidth(), longHedge.getHeight(),
                         false, false);
                 }
-                else if (propGrid[row][col] == 5) // horizontal logs
-                    batch.draw(log, x , y - (tileSize / 2) - 20, tileSize * 2, tileSize * 3);
-                else if (propGrid[row][col] == 6)
-                    batch.draw(flag, x, y, tileSize * 2, tileSize * 2);
+//                else if (propGrid[row][col] == 5) // horizontal logs
+//                    batch.draw(log, x , y - (tileSize / 2) - 20, tileSize * 2, tileSize * 3);
+
+                else if (propGrid[row][col] == 5){ // vertical logs
+                    batch.draw(log,
+                        x, y + 45,
+                        tileSize / 2f, tileSize / 2f,
+                        tileSize * 2, tileSize * 3,
+                        1f, 1f,
+                        180,
+                        0, 0,
+                        log.getWidth(), log.getHeight(),
+                        false, false);
+                }
+
                 else if (propGrid[row][col] == 7){ // vertical logs
                     batch.draw(log,
                         x + (tileSize / 2) + 20, y,
@@ -259,8 +211,79 @@ public class Background {
                         log.getWidth(), log.getHeight(),
                         false, false);
                 }
+                // flag and target
+                else if (propGrid[row][col] == 6)
+                    batch.draw(flag, x, y, tileSize * 2, tileSize * 2);
                 else if (propGrid[row][col] == 8)
                     batch.draw(target, x, y, tileSize * 2, tileSize * 2);
+
+                    // Hedge border
+                else if (propGrid[row][col] == 9)
+                    batch.draw(corner, x, y, tileSize, tileSize);
+                else if (propGrid[row][col] == 10)
+                    batch.draw(corner,
+                        x, y,
+                        tileSize / 2f, tileSize / 2f,
+                        tileSize, tileSize,
+                        1f, 1f,
+                        90,
+                        0, 0,
+                        corner.getWidth(), corner.getHeight(),
+                        false, false);
+                else if (propGrid[row][col] == 11)
+                    batch.draw(corner,
+                        x, y,
+                        tileSize / 2f - 5, tileSize / 2f,
+                        tileSize, tileSize,
+                        1f, 1f,
+                        180,
+                        0, 0,
+                        corner.getWidth(), corner.getHeight(),
+                        false, false);
+                else if (propGrid[row][col] == 12)
+                    batch.draw(corner,
+                        x, y,
+                        tileSize / 2f - 5, tileSize / 2f + 5,
+                        tileSize, tileSize,
+                        1f, 1f,
+                        270,
+                        0, 0,
+                        corner.getWidth(), corner.getHeight(),
+                        false, false);
+                    // Border
+                else if (propGrid[row][col] == 13)
+                    batch.draw(border, x, y, tileSize, tileSize);
+                else if (propGrid[row][col] == 14)
+                    batch.draw(border,
+                        x, y,
+                        tileSize / 2f, tileSize / 2f,
+                        tileSize, tileSize,
+                        1f, 1f,
+                        90,
+                        0, 0,
+                        corner.getWidth(), corner.getHeight(),
+                        false, false);
+                else if (propGrid[row][col] == 15)
+                    batch.draw(border,
+                        x, y,
+                        tileSize / 2f, tileSize / 2f,
+                        tileSize, tileSize,
+                        1f, 1f,
+                        180,
+                        0, 0,
+                        corner.getWidth(), corner.getHeight(),
+                        false, false);
+                else if (propGrid[row][col] == 16)
+                    batch.draw(border,
+                        x, y,
+                        tileSize / 2f - 5, tileSize / 2f + 5,
+                        tileSize, tileSize,
+                        1f, 1f,
+                        270,
+                        0, 0,
+                        corner.getWidth(), corner.getHeight(),
+                        false, false);
+
             }
         }
     }
