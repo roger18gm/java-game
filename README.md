@@ -41,4 +41,7 @@ The majority of our studies came from the documentation directly from the libgdx
 
 ## Future plans
 We plan to continue working on this projects and turn it into a fully functioning game. This includes adding adding aspects of "hurt" and creating the ability to pick up items to win the game. 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
